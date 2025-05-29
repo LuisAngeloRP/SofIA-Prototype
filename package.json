@@ -8,7 +8,11 @@
     "dev": "nodemon src/index.js",
     "test": "node test-bot.js",
     "test:images": "node test-image-recognition.js",
-    "test:ai-vs-ai": "node test-ai-vs-ai.js"
+    "test:ai-vs-ai": "node test-ai-vs-ai.js",
+    "webapp:dev": "cd webapp && npm run dev",
+    "webapp:build": "cd webapp && npm run build",
+    "webapp:start": "cd webapp && npm start",
+    "webapp:install": "cd webapp && npm install"
   },
   "dependencies": {
     "whatsapp-web.js": "^1.23.0",

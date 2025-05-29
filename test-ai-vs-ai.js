@@ -28,7 +28,7 @@ class AIClientSimulator {
         });
         
         this.config = {
-            model: 'sonar-pro',
+            model: 'sonar',
             maxTokens: 150,
             searchContextSize: 'low'
         };
