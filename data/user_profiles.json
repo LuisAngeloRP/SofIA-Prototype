@@ -1,0 +1,108 @@
+{
+  "test_user_ai_driven": {
+    "name": "María",
+    "financial_data": {
+      "income": [
+        {
+          "id": "0c1daebc-db8a-42f2-a3b2-217f452beeaa",
+          "amount": 75000,
+          "source": "trabajo",
+          "date": "2025-05-29T18:11:54.460Z",
+          "registered_at": "2025-05-29T18:11:54.460Z",
+          "ai_processed": true
+        },
+        {
+          "id": "dde81353-c6c9-401b-bd1a-5b4b393cf308",
+          "amount": 75000,
+          "source": "trabajo",
+          "date": "2025-05-29T18:13:49.632Z",
+          "registered_at": "2025-05-29T18:13:49.632Z",
+          "ai_processed": true
+        },
+        {
+          "id": "47dd7915-bc9c-4dca-b156-b576907ba454",
+          "amount": 75000,
+          "source": "trabajo",
+          "date": "2025-05-29T18:16:06.501Z",
+          "registered_at": "2025-05-29T18:16:06.501Z",
+          "ai_processed": true
+        }
+      ],
+      "expenses": [
+        {
+          "id": "8e381cbd-df31-49a2-a755-f16c9caa557a",
+          "amount": 15000,
+          "category": "supermercado",
+          "date": "2025-05-29T18:12:05.022Z",
+          "registered_at": "2025-05-29T18:12:05.022Z",
+          "ai_processed": true
+        },
+        {
+          "id": "c13a457d-4003-48fd-801f-c51f1a36648a",
+          "amount": 8000,
+          "category": "Servicios",
+          "date": "2025-05-29T18:12:17.885Z",
+          "registered_at": "2025-05-29T18:12:17.885Z",
+          "ai_processed": true
+        },
+        {
+          "id": "58901e43-ca5b-4f83-aafe-08a49495f164",
+          "amount": 15000,
+          "category": "supermercado",
+          "date": "2025-05-29T18:14:04.212Z",
+          "registered_at": "2025-05-29T18:14:04.212Z",
+          "ai_processed": true
+        },
+        {
+          "id": "5c738824-7f4d-47ca-89bd-a62ecfbd8d1f",
+          "amount": 8000,
+          "category": "servicios básicos",
+          "date": "2025-05-29T18:14:14.240Z",
+          "registered_at": "2025-05-29T18:14:14.240Z",
+          "ai_processed": true
+        },
+        {
+          "id": "45f8447d-2e4b-40a2-8a19-ade901d9c4c7",
+          "amount": 15000,
+          "category": "supermercado",
+          "date": "2025-05-29T18:16:18.670Z",
+          "registered_at": "2025-05-29T18:16:18.670Z",
+          "ai_processed": true
+        },
+        {
+          "id": "bcd140d3-c2bc-4bbe-999f-7ab984b96f6f",
+          "amount": 8000,
+          "category": "servicios",
+          "date": "2025-05-29T18:16:33.817Z",
+          "registered_at": "2025-05-29T18:16:33.817Z",
+          "ai_processed": true
+        }
+      ],
+      "goals": []
+    }
+  },
+  "51942230232@c.us": {
+    "financial_data": {
+      "income": [],
+      "expenses": [
+        {
+          "id": "8ac8a7c2-ee29-4897-a638-9d5adb9c387f",
+          "amount": 2000,
+          "category": "Travel",
+          "date": "2025-05-29T18:30:26.371Z",
+          "registered_at": "2025-05-29T18:30:26.371Z",
+          "ai_processed": true
+        },
+        {
+          "id": "306c532c-8271-4817-b66d-c8bc1524826b",
+          "amount": 400,
+          "category": "General",
+          "date": "2025-05-29T18:32:17.108Z",
+          "registered_at": "2025-05-29T18:32:17.108Z",
+          "ai_processed": true
+        }
+      ],
+      "goals": []
+    }
+  }
+}

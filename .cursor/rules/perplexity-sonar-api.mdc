@@ -1,0 +1,532 @@
+---
+description: Implementar prompts con IA o implementar IA, con relación a API usar SONAR
+globs: 
+alwaysApply: false
+---
+# Perplexity Sonar API - Cursor Rules
+
+## Overview
+These rules provide comprehensive guidelines for working with the Perplexity Sonar API, focusing on web search-powered language models that combine LLM capabilities with real-time web searches.
+
+## API Structure & Authentication
+
+### Base Configuration
+```python
+from openai import OpenAI
+
+YOUR_API_KEY = "INSERT API KEY HERE"
+client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
+```
+
+### Available Models
+- `sonar` - Basic web search model
+- `sonar-pro` - Enhanced web search model  
+- `sonar-reasoning-pro` - Reasoning-enabled model with <think> tokens
+- `sonar-deep-research` - Deep research model (no image support)
+
+## Prompting Best Practices
+
+### 1. System Prompt Guidelines
+- Use system prompts for style, tone, and language instructions
+- Real-time search component does NOT attend to system prompt
+- Keep instructions clear and focused on response format
+
+**Good Example:**
+```python
+{
+    "role": "system", 
+    "content": "You are a helpful AI assistant. Provide concise, accurate responses with proper citations."
+}
+```
+
+### 2. User Prompt Best Practices
+
+#### Be Specific and Contextual
+- Add 2-3 extra words of context for dramatically better performance
+- Use search-friendly terms that would appear on relevant web pages
+
+**Good:** "Explain recent advances in climate prediction models for urban planning"
+**Poor:** "Tell me about climate models"
+
+#### Avoid Few-Shot Prompting
+- Few-shot examples confuse web search models
+- They trigger searches for your examples rather than the actual query
+
+**Good:** "Summarize current research on mRNA vaccine technology"
+**Poor:** "Here's an example summary: [example]. Now summarize mRNA vaccines."
+
+#### Think Like a Web Search User
+- Craft prompts with terms experts would use online
+- Consider how the topic would be described on relevant websites
+
+**Good:** "Compare energy efficiency ratings of heat pumps vs. traditional HVAC systems for residential use"
+**Poor:** "Tell me which home heating is better"
+
+### 3. Common Pitfalls to Avoid
+
+#### Overly Generic Questions
+**Avoid:** "What's happening in AI?"
+**Instead:** "What are the three most significant commercial applications of generative AI in healthcare in the past year?"
+
+#### Complex Multi-Part Requests
+**Avoid:** "Explain quantum computing, and also tell me about regenerative agriculture, and provide stock market predictions."
+**Instead:** "Explain quantum computing principles that might impact cryptography in the next decade."
+
+#### Assuming Search Intent
+**Avoid:** "Tell me about the latest developments."
+**Instead:** "What are the latest developments in offshore wind energy technology announced in the past 6 months?"
+
+## Search Domain Filtering
+
+### Basic Usage
+```python
+# OpenAI client example
+payload = {
+    "model": "sonar-pro",
+    "messages": [...],
+    "search_domain_filter": [
+        "nasa.gov",           # Include only these domains
+        "wikipedia.org",
+        "-pinterest.com",     # Exclude with minus prefix
+        "-reddit.com"
+    ]
+}
+
+# Requests library example
+import requests
+url = "https://api.perplexity.ai/chat/completions"
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+payload = {
+    "model": "sonar-reasoning-pro",
+    "messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Tell me about the James Webb Space Telescope discoveries."}
+    ],
+    "search_domain_filter": [
+        "nasa.gov",
+        "wikipedia.org",
+        "space.com"
+    ]
+}
+```
+
+### Domain Filter Rules
+- Maximum 10 domains per filter
+- Use simple domain names (e.g., `example.com`)
+- No `http://`, `https://`, or `www.` prefixes
+- Main domains filter all subdomains
+- Mix inclusion and exclusion in same request
+
+### Domain Filter Best Practices
+
+#### Domain Specification
+- **Use simple domain names**: Specify domains in their simplest form (e.g., `example.com`) without protocol prefixes
+- **Main domains only**: Using the main domain (e.g., `nytimes.com`) will filter all subdomains as well
+- **Exclude with minus prefix**: Use `-domain.com` format to exclude specific domains
+
+#### Filter Optimization
+- **Be specific**: Use domains that are most relevant to your query to get the best results
+- **Combine approaches**: You can mix inclusion and exclusion in the same request (e.g., `["wikipedia.org", "-pinterest.com"]`)
+- **Limit filter size**: Although you can add up to 10 domains, using fewer, more targeted domains often yields better results
+- **Quality over quantity**: Focus on authoritative sources rather than casting a wide net
+
+### Performance Considerations
+- **Response time impact**: Adding domain filters may slightly increase response time as the search engine needs to apply additional filtering
+- **Overly restrictive filters**: May result in fewer search results, potentially affecting the quality of the response
+- **Balance specificity**: Find the right balance between being specific and maintaining sufficient search scope
+
+### Recommended Trusted Sources
+```python
+# Academic/Research
+["wikipedia.org", "arxiv.org", "pubmed.ncbi.nlm.nih.gov"]
+
+# Technology Documentation  
+["docs.python.org", "developer.mozilla.org", "stackoverflow.com"]
+
+# News & Current Events
+["reuters.com", "bbc.com", "apnews.com"]
+
+# Government/Official
+["gov", "edu", "org"]
+```
+
+### Domain Filter Examples
+
+#### Allowlist Specific Domains
+```python
+{
+    "search_domain_filter": [
+        "nasa.gov",
+        "wikipedia.org", 
+        "space.com"
+    ]
+}
+# Restricts search to only these trusted sources
+```
+
+#### Denylist Specific Domains
+```python
+{
+    "search_domain_filter": [
+        "-pinterest.com",
+        "-reddit.com",
+        "-quora.com"
+    ]
+}
+# Excludes these domains from search results
+```
+
+## Search Context Size Control
+
+### Overview
+The `search_context_size` parameter allows you to control how much search context is retrieved from the web during query resolution, letting you balance cost and comprehensiveness.
+
+**Default:** `medium`
+**Cost Impact:** Selecting `high` increases search costs due to more extensive web retrieval
+
+### Configuration
+```python
+{
+    "web_search_options": {
+        "search_context_size": "medium"  # Options: "low", "medium", "high"
+    }
+}
+```
+
+### Context Size Options
+
+#### Low Context Size
+- **Best for:** Short factual queries or strict token cost constraints
+- **Use case:** High-volume endpoints where cost efficiency is critical
+- **Trade-off:** Reduced comprehensiveness for lower cost
+
+```python
+payload = {
+    "model": "sonar",
+    "messages": [
+        {"role": "system", "content": "Be precise and concise."},
+        {"role": "user", "content": "How many stars are there in our galaxy?"}
+    ],
+    "web_search_options": {
+        "search_context_size": "low"
+    }
+}
+```
+
+#### Medium Context Size (Default)
+- **Best for:** General use cases
+- **Use case:** Balanced approach for most applications
+- **Trade-off:** Good balance between cost and quality
+
+#### High Context Size
+- **Best for:** Deep research, exploratory questions, critical citations
+- **Use case:** When coverage and evidence matter more than cost
+- **Trade-off:** Higher cost for maximum comprehensiveness
+
+```python
+payload = {
+    "model": "sonar-reasoning-pro",
+    "messages": [
+        {"role": "system", "content": "Be precise and concise."},
+        {"role": "user", "content": "Explain the economic causes of the 2008 financial crisis."}
+    ],
+    "web_search_options": {
+        "search_context_size": "high"
+    }
+}
+```
+
+### Best Practices for Context Size
+
+#### Cost Optimization Strategies
+- **Default to low/medium** for high-volume endpoints
+- **Selectively upgrade to high** for complex user prompts
+- **Monitor token usage** at scale to optimize costs
+- **Combine with domain filters** for focused, cost-effective searches
+
+#### Performance Considerations
+- **Latency impact:** Larger context sizes may slightly increase response time
+- **Real-time interfaces:** Test different settings to balance UX and runtime
+- **Batching queries:** Consider context size when processing multiple requests
+
+#### Strategic Usage by Query Type
+```python
+# Simple factual queries
+{"search_context_size": "low"}
+
+# General research questions  
+{"search_context_size": "medium"}
+
+# Complex analysis or academic research
+{"search_context_size": "high"}
+```
+
+### Combining Context Size with Other Parameters
+```python
+# Balanced approach: medium context + focused domains
+{
+    "web_search_options": {
+        "search_context_size": "medium"
+    },
+    "search_domain_filter": ["wikipedia.org", "britannica.com"]
+}
+
+# High-quality research: high context + academic sources
+{
+    "web_search_options": {
+        "search_context_size": "high"
+    },
+    "search_domain_filter": ["arxiv.org", "pubmed.ncbi.nlm.nih.gov"],
+    "search_recency_filter": "year"
+}
+```
+
+## Image Handling
+
+### Supported Formats & Limits
+- **Formats:** PNG, JPEG, WEBP, GIF
+- **Size Limit:** 5MB per image (base64)
+- **Methods:** Base64 data URI or HTTPS URL
+
+### Base64 Implementation
+```python
+{
+    "role": "user",
+    "content": [
+        {
+            "type": "text",
+            "text": "Can you describe this image?"
+        },
+        {
+            "type": "image_url",
+            "image_url": {
+                "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+            }
+        }
+    ]
+}
+```
+
+### HTTPS URL Implementation
+```python
+{
+    "type": "image_url",
+    "image_url": {
+        "url": "https://example.com/path/to/image.png"
+    }
+}
+```
+
+### Image Filter Options
+```python
+{
+    "return_images": true,
+    "image_domain_filter": ["-gettyimages.com"],  # Exclude specific providers
+    "image_format_filter": ["gif"]                # Restrict to specific formats
+}
+```
+
+### Image Limitations
+- **Cannot combine:** Images + regex structured output
+- **No support:** `sonar-deep-research` model
+- **Requirements:** HTTPS URLs must be publicly accessible
+
+## Structured Outputs
+
+### JSON Schema (Recommended)
+```python
+from pydantic import BaseModel
+
+class ResponseFormat(BaseModel):
+    first_name: str
+    last_name: str
+    year_of_birth: int
+    num_seasons_in_nba: int
+
+payload = {
+    "model": "sonar",
+    "messages": [...],
+    "response_format": {
+        "type": "json_schema",
+        "json_schema": {"schema": ResponseFormat.model_json_schema()}
+    }
+}
+```
+
+### JSON Schema Limitations
+- **No recursive schemas**
+- **No unconstrained objects** (`dict[str, Any]`)
+- **No self-referencing models**
+
+### Regex Format (sonar only)
+```python
+{
+    "response_format": {
+        "type": "regex",
+        "regex": {"regex": r"(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"}
+    }
+}
+```
+
+### Supported Regex Features
+- **Characters:** `\d`, `\w`, `\s`, `.`
+- **Classes:** `[0-9A-Fa-f]`, `[^x]`
+- **Quantifiers:** `*`, `?`, `+`, `{3}`, `{2,4}`, `{3,}`
+- **Groups:** `(...)`, `(?:...)`, `(?=...)`, `(?!...)`
+
+### Unsupported Regex Features
+- Anchors: `^`, `$`, `\b`
+- Backreferences: `\1`
+- Lookbehinds: `(?<=...)`, `(?<!...)`
+
+## Date Range Filtering
+
+### Date Format Requirements
+- **Required format:** `"m/d/yyyy"` (e.g., `"3/1/2025"`)
+- **Validation regex:** `^(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])/[0-9]{4}$`
+
+### Implementation
+```python
+{
+    "search_after_date_filter": "3/1/2025",   # Results after this date
+    "search_before_date_filter": "3/5/2025",  # Results before this date
+    "search_recency_filter": "month"           # Additional recency filter
+}
+```
+
+## Error Handling & Performance
+
+### Common Issues
+1. **First request delay:** New JSON schemas take 10-30 seconds to prepare
+2. **Timeout errors:** May occur on first structured output request
+3. **Domain restrictions:** Overly restrictive filters reduce result quality
+4. **Image size:** Ensure base64 images are under 5MB
+
+### Performance Optimization
+```python
+{
+    "max_tokens": 1000,                    # Prevent excessive responses
+    "search_domain_filter": ["trusted.com"], # Limit to quality sources
+    "search_recency_filter": "month",       # Balance recency vs. relevance
+    "web_search_options": {
+        "search_context_size": "medium"     # Balance cost vs. comprehensiveness
+    }
+}
+```
+
+## Query Type Strategies
+
+### Factual Research
+```python
+{
+    "search_domain_filter": ["wikipedia.org", "britannica.com"],
+    "search_recency_filter": "year",
+    "web_search_options": {"search_context_size": "low"}
+}
+# Use specific questions, prefer academic sources, cost-efficient for simple facts
+```
+
+### Technical Documentation
+```python
+{
+    "search_domain_filter": ["docs.python.org", "stackoverflow.com"],
+    "max_tokens": 1500,
+    "web_search_options": {"search_context_size": "medium"}
+}
+# Include relevant technical context, specify programming language
+```
+
+### Current Events & News
+```python
+{
+    "search_domain_filter": ["reuters.com", "bbc.com", "apnews.com"],
+    "search_recency_filter": "week",
+    "search_after_date_filter": "1/1/2024",
+    "web_search_options": {"search_context_size": "medium"}
+}
+# Use time-specific queries, prefer authoritative news sources
+```
+
+### Deep Research & Analysis
+```python
+{
+    "search_domain_filter": ["arxiv.org", "pubmed.ncbi.nlm.nih.gov"],
+    "web_search_options": {"search_context_size": "high"},
+    "max_tokens": 2500
+}
+# Comprehensive context for complex topics, academic sources
+```
+
+### Creative Content
+```python
+{
+    "search_domain_filter": ["-pinterest.com", "-reddit.com"],
+    "max_tokens": 2000,
+    "web_search_options": {"search_context_size": "low"}
+}
+# Provide detailed style guidelines in system prompt, cost-efficient for creative tasks
+```
+
+## Complete Example Template
+
+```python
+from openai import OpenAI
+
+client = OpenAI(api_key="YOUR_API_KEY", base_url="https://api.perplexity.ai")
+
+def make_sonar_request(
+    query: str,
+    model: str = "sonar-pro",
+    system_prompt: str = "You are a helpful AI assistant.",
+    domain_filter: list = None,
+    structured_output: dict = None,
+    image_url: str = None,
+    date_range: dict = None,
+    context_size: str = "medium"
+):
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": query}
+    ]
+    
+    # Handle image input
+    if image_url:
+        messages[-1]["content"] = [
+            {"type": "text", "text": query},
+            {"type": "image_url", "image_url": {"url": image_url}}
+        ]
+    
+    payload = {
+        "model": model,
+        "messages": messages,
+        "max_tokens": 1500,
+        "web_search_options": {
+            "search_context_size": context_size
+        }
+    }
+    
+    # Add optional parameters
+    if domain_filter:
+        payload["search_domain_filter"] = domain_filter
+    
+    if structured_output:
+        payload["response_format"] = structured_output
+    
+    if date_range:
+        payload.update(date_range)
+    
+    return client.chat.completions.create(**payload)
+```
+
+## Best Practices Summary
+
+1. **Be Specific:** Add context to improve search relevance
+2. **Use Domain Filters:** Restrict to trusted, relevant sources  
+3. **Control Context Size:** Balance cost and comprehensiveness based on query complexity
+4. **Validate Inputs:** Check date formats and image sizes
+5. **Handle Errors:** Account for first-request delays with structured outputs
+6. **Optimize Performance:** Use appropriate token limits and context sizes
+7. **Think Search-First:** Craft queries as if searching the web directly
+8. **Single Focus:** One topic per query for best results
+9. **Cite Sources:** Request proper citations for factual claims
+10. **Cost Management:** Use `low` context for simple queries, `high` for research 

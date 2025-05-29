@@ -1,0 +1,152 @@
+{
+  "test_user_ai_driven": [
+    {
+      "timestamp": "2025-05-29T18:15:06.682Z",
+      "user": "¿Qué opinas de meter dinero en fondos de inversión?",
+      "agent": "¡Qué buena pregunta, María! 😊 Con el colchón que tienes ahorita (¡más de $100,000 libres!), los fondos de inversión pueden ser una excelente opción para comenzar a hacer crecer ese dinero sin que esté parado. Te permiten diversificar y aprovechar las subidas del mercado, pero claro, siempre hay cierto riesgo, así que elegir el fondo correcto según tu perfil y tus metas es clave.\n\nSi quieres, puedo buscarte hoy mismo los fondos de inversión más estables o populares en México, o analizar juntos tu perfil de riesgo para recomendarte algo a tu medida. ¿Te gustaría que te muestre opciones conservadoras o prefieres explorar algo más atrevido? 🔍💬",
+      "formatted_time": "29/05/2025 13:15"
+    },
+    {
+      "timestamp": "2025-05-29T18:15:23.298Z",
+      "user": "¿Crees que es buen momento para invertir con la inflación actual?",
+      "agent": "¡Hola María! Entiendo tu preocupación sobre invertir con la inflación actual 💭 Es una pregunta muy pertinente, especialmente considerando que tienes ese colchón importante de $104,000 disponible.\n\nAhora mismo, con la inflación en México rondando el 4.65% (según datos recientes), mantener tu dinero simplemente guardado significa perder poder adquisitivo. Por eso, invertir puede ser una estrategia inteligente para proteger tu capital, siempre adaptando el instrumento a tu perfil de riesgo y horizonte temporal.\n\nConsiderando tu situación financiera, podrías considerar distribuir ese dinero: una parte en instrumentos que superen la inflación (como ciertos CETES o fondos indexados) y otra en inversiones con potencial de mayor crecimiento. Recuerda que diversificar es clave en momentos de incertidumbre económica 📊.\n\n¿Te gustaría que revisemos juntas algunas opciones específicas que podrían funcionar bien con tu perfil y tus objetivos financieros actuales?",
+      "formatted_time": "29/05/2025 13:15"
+    },
+    {
+      "timestamp": "2025-05-29T18:15:59.535Z",
+      "user": "Hola! Soy María",
+      "agent": "¡Hola María! Qué gusto verte de nuevo por aquí 😊 Veo que has estado manejando muy bien tus finanzas desde nuestra última conversación. Con esos $150,000 de ingresos y gastos de solo $46,000, estás logrando una tasa de ahorro impresionante.\n\nHe notado que tus principales gastos están en lo esencial - supermercado y servicios básicos - lo que muestra una disciplina financiera ejemplar. ¿Has pensado qué planeas hacer con ese excedente de más de $100,000 que estás acumulando? Podríamos explorar algunas opciones de inversión que se alineen con tus metas a mediano y largo plazo.\n\n¿Hay algún objetivo financiero específico en el que estés pensando últimamente? Me encantaría ayudarte a desarrollar un plan para aprovechar al máximo ese excelente hábito de ahorro que has cultivado 💪",
+      "formatted_time": "29/05/2025 13:15"
+    },
+    {
+      "timestamp": "2025-05-29T18:16:12.301Z",
+      "user": "Este mes cobré 75 mil pesos de mi trabajo",
+      "agent": "¡Gracias por avisarme de tu nuevo ingreso, María! Ya registré esos $75,000 que cobraste este mes ✅. Me alegra mucho ver que sigues manteniendo ese ritmo tan estable de ingresos, ¡eso te da un margen increíble para planear tus siguientes pasos!\n\n¿Quieres que revisemos si es buen momento para mover una parte de ese ingreso a alguna inversión específica? O si necesitas liquidez para algún objetivo cercano, cuéntame y armamos una estrategia sencilla que te dé paz y rendimiento 😉. ¿Tienes alguna meta nueva en mente para este mes?",
+      "formatted_time": "29/05/2025 13:16"
+    },
+    {
+      "timestamp": "2025-05-29T18:16:25.511Z",
+      "user": "Y creo que gasté como 15 mil en el super",
+      "agent": "¡Perfecto María, anotado! He registrado esos $15,000 de gastos en el súper ✅. Veo que tus compras de supermercado se mantienen consistentes, lo que es genial para tu presupuesto mensual.\n\nCon este nuevo registro, ahora tienes un balance muy saludable: $225,000 de ingresos vs. $61,000 de gastos totales, lo que significa que estás ahorrando más del 70% de tus ingresos. Eso te posiciona muy por encima del promedio nacional de ahorro, ¡felicidades por esa disciplina! 💪\n\n¿Has pensado en establecer un presupuesto específico para alimentación, o prefieres mantener esta flexibilidad que parece funcionarte tan bien hasta ahora?",
+      "formatted_time": "29/05/2025 13:16"
+    },
+    {
+      "timestamp": "2025-05-29T18:16:40.281Z",
+      "user": "También pagué 8000 de luz y agua",
+      "agent": "¡Anotado, María! Ya registré esos $8,000 de luz y agua en tu control de gastos ✅. Estos servicios básicos representan una parte bastante razonable de tus gastos mensuales, lo que refleja un buen equilibrio en tu presupuesto.\n\nVeo que hasta ahora llevas $23,000 en gastos esenciales este mes ($15,000 en super + $8,000 en servicios), lo que mantiene tu tasa de ahorro extraordinariamente alta. Con ingresos de $225,000 y gastos totales de $69,000, estás ahorrando aproximadamente el 69% de tus ingresos - ¡eso es realmente impresionante! 🌟\n\n¿Has considerado crear un fondo específico para estos gastos fijos? En el actual entorno económico, podría ser interesante destinar una pequeña parte de tus ahorros a instrumentos de deuda a corto plazo para cubrir estos gastos recurrentes. ¿Te gustaría que exploremos algunas opciones?",
+      "formatted_time": "29/05/2025 13:16"
+    },
+    {
+      "timestamp": "2025-05-29T18:17:00.757Z",
+      "user": "¿Cómo voy con mis finanzas?",
+      "agent": "¡Hola María! 👋 Vamos muy bien con tus finanzas, estás en una posición realmente sólida. Según lo que hemos estado registrando, tienes:\n\nIngresos totales: $225,000 (incluyendo tus dos cobros de $75,000)\nGastos totales: $69,000 (incluyendo $15,000 del súper y $8,000 de servicios)\n\nEsto significa que estás ahorrando aproximadamente un 69% de tus ingresos, ¡lo cual es extraordinario! 🌟 La mayoría de los expertos financieros recomiendan ahorrar entre 15-20% de los ingresos, y tú estás muy por encima de ese objetivo.\n\nCon este ritmo de ahorro, estás construyendo un excelente colchón financiero que te dará tranquilidad y flexibilidad para tus metas futuras. Las tasas de interés actuales favorecen la inversión, y con el mercado mostrando movimientos interesantes (como las fluctuaciones de Boeing y Nvidia que vemos hoy), podríamos explorar algunas opciones para hacer crecer ese capital.\n\n¿Te interesaría que revisemos juntas algunas opciones de inversión para una parte de ese ahorro? Podríamos encontrar un balance entre liquidez y rendimiento que se ajuste perfectamente a tus objetivos. 😊",
+      "formatted_time": "29/05/2025 13:17"
+    },
+    {
+      "timestamp": "2025-05-29T18:17:15.641Z",
+      "user": "Me preocupa no estar ahorrando lo suficiente",
+      "agent": "María, entiendo perfecto tu preocupación, ¡es súper normal sentir esa inquietud aunque tus números sean tan sólidos! 😊 Ya revisé de nuevo tu registro, y, con tu ritmo actual, realmente estás ahorrando a un nivel que pocas personas logran: casi 7 de cada 10 pesos que recibes se quedan contigo. Eso te da mucho margen para cualquier imprevisto o para algún caprichito sin culpa.\n\nSi te gustaría sentir aún más seguridad, podríamos juntos definir un monto mensual fijo para ahorrar (además de lo que ya vas guardando), o quizá separar un “fondo de tranquilidad” exclusivo para emergencias. ¿Te gustaría que armemos un plan con pasos súper claros para que nunca te falte ese colchón y puedas disfrutar de tus logros con más calma? 💛",
+      "formatted_time": "29/05/2025 13:17"
+    },
+    {
+      "timestamp": "2025-05-29T18:17:33.773Z",
+      "user": "¿Qué opinas de meter dinero en fondos de inversión?",
+      "agent": "¡Hola María! Me encanta que estés considerando los fondos de inversión como parte de tu estrategia financiera 😊 \n\nCreo que son una excelente opción para ti, especialmente considerando tu impresionante tasa de ahorro del 69%. Los fondos de inversión te permiten diversificar riesgos y acceder a mercados que individualmente serían complicados de gestionar.\n\nVeo que actualmente hay fondos interesantes como el Fondo Naranja Rentabilidad 2025 II, el Arquia Rentabilidad 2025 y el Renta 4 Rentabilidad Noviembre 2025[1][2][3]. Estos fondos tienen fechas específicas de vencimiento, lo que podría alinearse bien con objetivos financieros a mediano plazo.\n\nCon tus $156,000 de ahorro actual, podrías considerar destinar una parte (quizás 30-40%) a estos instrumentos, manteniendo el resto como tu fondo de emergencia y liquidez. Lo interesante es que estos fondos están activos y podrían ofrecerte rendimientos superiores a instrumentos tradicionales de ahorro.\n\n¿Te gustaría que profundicemos en alguno de estos fondos específicos o prefieres explorar otras alternativas de inversión que complementen tu excelente estrategia de ahorro? 💙",
+      "formatted_time": "29/05/2025 13:17"
+    },
+    {
+      "timestamp": "2025-05-29T18:17:52.235Z",
+      "user": "¿Crees que es buen momento para invertir con la inflación actual?",
+      "agent": "¡Hola María! 👋 Es una pregunta super relevante considerando la situación económica actual. Con la tasa de inflación que estamos viendo en 2025 (alrededor del 3.8% según los últimos datos), mantener tu dinero sin invertir significa perder poder adquisitivo cada mes.\n\nCon tu excelente capacidad de ahorro del 69% de tus ingresos, definitivamente es buen momento para considerar inversiones que superen la inflación. Los $156,000 que has logrado ahorrar podrían trabajar para ti en opciones como ETFs indexados o fondos de renta fija con rendimientos por encima del 5-6% anual, que te darían una ganancia real positiva.\n\nLo importante es no mantener todo tu capital en efectivo, pero tampoco arriesgarlo todo. ¿Te parece si analizamos juntas algunas opciones específicas que se ajusten a tu perfil de riesgo y podamos combatir esa inflación? 💪",
+      "formatted_time": "29/05/2025 13:17"
+    }
+  ],
+  "51942230232@c.us": [
+    {
+      "timestamp": "2025-05-29T18:24:01.218Z",
+      "user": "hola",
+      "agent": "¡Hola Me alegra mucho que hayas dicho hola. ¿En qué puedo ayudarte hoy? ¿Tienes alguna pregunta sobre finanzas o simplemente quieres charlar un rato? Estoy aquí para ayudarte con todo lo que necesites. 😊",
+      "formatted_time": "29/05/2025 13:24"
+    },
+    {
+      "timestamp": "2025-05-29T18:24:53.404Z",
+      "user": "hola",
+      "agent": "¡Hola Me alegra mucho que hayas dicho hola. ¿En qué puedo ayudarte hoy? ¿Tienes alguna pregunta sobre finanzas o simplemente quieres charlar un rato? Estoy aquí para ayudarte con todo lo que necesites. 😊\n\nSi tienes alguna duda sobre finanzas, por favor, no dudes en preguntar. Estoy preparada para darte consejos o información actualizada sobre el mercado. También puedo charlar contigo sobre temas financieros en general si te interesa. ¿Qué te parece si empezamos con algo que te interese específicamente? 😊",
+      "formatted_time": "29/05/2025 13:24"
+    },
+    {
+      "timestamp": "2025-05-29T18:28:35.617Z",
+      "user": "holaa",
+      "agent": "¡Hola Me alegra mucho que hayas dicho \"holaa\". 😊 ¿En qué puedo ayudarte hoy? ¿Tienes alguna pregunta sobre finanzas o simplemente quieres charlar un rato sobre temas financieros o algo más? Estoy aquí para ayudarte con todo lo que necesites. Si tienes alguna duda sobre finanzas, por favor, no dudes en preguntar. Estoy preparada para darte consejos o información actualizada sobre el mercado. ¿Qué te parece si empezamos con algo que te interese específicamente? 😊",
+      "formatted_time": "29/05/2025 13:28"
+    },
+    {
+      "timestamp": "2025-05-29T18:29:04.043Z",
+      "user": "qué sabes de mí",
+      "agent": "¡Hola! De ti solo sé que me has saludado con mucho entusiasmo, y eso me encanta. 😄 Pero aún no tengo detalles sobre tus finanzas o metas, ¡así que cuéntame! ¿Quieres que empecemos por allí? ¿Qué aspecto financiero te gustaría explorar o mejorar?",
+      "formatted_time": "29/05/2025 13:29"
+    },
+    {
+      "timestamp": "2025-05-29T18:29:34.302Z",
+      "user": "me llamo Luis y soy ingeniero de software",
+      "agent": "¡Hola, Luis! ¡Qué interesante saber que eres ingeniero de software! 😊 Acabo de registrar esa información sobre ti, así que de ahora en adelante puedo personalizar mejor la conversación y los consejos que te doy, especialmente si tienen que ver con tecnología o incluso con inversiones relacionadas con el sector.\n\n¿En qué te gustaría profundizar? Como tienes experiencia en software, tal vez te interese charlar sobre inversiones en tecnología, crypto, o incluso sobre cómo aprovechar tu perfil profesional para mejorar tus ingresos o ahorros. Si tienes una pregunta puntual sobre el mercado financiero o necesitas consejos sobre finanzas personales adaptados a tu situación, dime y te doy información específica o busco datos en tiempo real si lo necesitas.\n\nTambién puedo ayudarte a resolver dudas sobre presupuesto, ahorro, inversiones o incluso cómo protegerte digitalmente desde el punto de vista financiero. ¿Por dónde te gustaría empezar o hay algo que te preocupa más sobre tus finanzas?",
+      "formatted_time": "29/05/2025 13:29"
+    },
+    {
+      "timestamp": "2025-05-29T18:30:02.421Z",
+      "user": "quiero que me respondas más corto, me das miedo",
+      "agent": "¡Hola Luis 😊 Entiendo que te sientes un poco incómodo con la extensión de mis respuestas. ¡No te preocupes Estoy aquí para ayudarte de la manera más clara y concisa posible. Puedes pedirme que aborde un tema específico o que te dé consejos breves sobre finanzas o tecnología. ¿Qué te parece si empezamos con algo más ligero? ¿Quieres hablar sobre cómo aprovechar tu perfil profesional para mejorar tus finanzas personales o tal vez sobre las últimas tendencias en tecnología que podrían interesarte? Estoy aquí para ayudarte de manera personalizada y adaptada a tus intereses. 😊\n\nSi tienes alguna pregunta sobre datos financieros del mercado, puedo buscarlos en tiempo real para ti. Solo dime qué necesitas saber.",
+      "formatted_time": "29/05/2025 13:30"
+    },
+    {
+      "timestamp": "2025-05-29T18:30:30.070Z",
+      "user": "registrame que me gasté 2000 soles en pasaje de avión a china",
+      "agent": "Listo, Luis, ya registré esos 2000 soles que gastaste en el pasaje a China. ✈️ ¿Quieres que te ayude a ajustar tu presupuesto mensual para compensar ese gasto o prefieres ideas para ahorrar en otros rubros? 😊",
+      "formatted_time": "29/05/2025 13:30"
+    },
+    {
+      "timestamp": "2025-05-29T18:31:04.200Z",
+      "user": "mi sueldo ahorita es 2000 soles, y tengo tarjetas de crédito, que me recomendarías?",
+      "agent": "Luis, ya registré que tienes un sueldo de 2000 soles y que acabas de gastar otros 2000 en el pasaje a China.🚀 Sobre tus tarjetas de crédito, lo más importante es evitar que la deuda crezca y no pagar solo el mínimo, ¿qué intereses tienes ahí? Si me dices, te ayudo a armar un plan práctico para que no te afecte tu sueldo y puedas controlar esos gastos. ¿Quieres que revisemos juntos cómo optimizar tu presupuesto? 😊",
+      "formatted_time": "29/05/2025 13:31"
+    },
+    {
+      "timestamp": "2025-05-29T18:32:19.339Z",
+      "user": "gasté 400",
+      "agent": "Luis, ya registré ese gasto de 400 soles. 😊\n\nAhora suma un total de 2,400 soles en gastos, incluyendo el pasaje a China y este gasto adicional. Si quieres, podemos revisar cómo ajustar tu presupuesto para que no te afecte tu sueldo mensual de 2,000 soles. ¿Quieres que te ayude a planificar un poco mejor para el mes? 💡",
+      "formatted_time": "29/05/2025 13:32"
+    },
+    {
+      "timestamp": "2025-05-29T18:32:34.051Z",
+      "user": "a ver",
+      "agent": "Luis, ya tengo registrado ese gasto adicional de 400 soles, así que sumas un total de 2,400 soles en gastos este mes. 😊 Con tu sueldo de 2,000 soles, eso significa que estás gastando más de lo que ganas, ¿quieres que te ayude a crear un plan para equilibrar esas diferencias y evitar deuda? 💪 También me gustaría saber si aún tienes saldo disponible en tus tarjetas o si estás acumulando intereses, para darte recomendaciones más precisas. ¿Qué me cuentas?",
+      "formatted_time": "29/05/2025 13:32"
+    },
+    {
+      "timestamp": "2025-05-29T18:36:33.971Z",
+      "user": "quiero ahorrar para comprarme una ps5 con el gta vi, pero no se como planificarme, ayudame",
+      "agent": "Luis, ya tengo registrado que llevas gastos por 2,400 soles y un sueldo de 2,000, así que lo primero para ahorrar para esa PS5 con GTA VI es equilibrar tu presupuesto. 🎮✨\n\nTe sugiero que empieces por identificar gastos no esenciales que puedas reducir un mes o dos, y apartar una cantidad fija semanal para tu meta, digamos 200 soles por semana; así en dos meses tendrías 1,600 y con un poco más podrías lograrlo sin endeudarte más. También, ¿me puedes decir si tus tarjetas de crédito están al límite o tienes margen? Porque si tienes intereses altos, lo mejor sería priorizar pagarlos. ¿Quieres que te arme un plan detallado con esos números? 😊",
+      "formatted_time": "29/05/2025 13:36"
+    },
+    {
+      "timestamp": "2025-05-29T18:37:37.267Z",
+      "user": "hazme el planeamiento de ahorro hasta el 26 de mayo de 2026, sabiendo que hoy es 29 de mayo de 2025",
+      "agent": "Claro, Luis. Te ayudaré a planificar tu ahorro para conseguir la PS5 con GTA VI antes del 26 de mayo de 2026. Primero, vamos a revisar tu situación actual. Llevas un total de 2,400 soles en gastos, de los cuales 2,000 soles son para tu viaje a China y 400 soles para un gasto general. \n\nPara empezar, te sugiero que identifiques gastos no esenciales que puedas reducir durante estos meses. También, podrías apartar una cantidad fija semanal para tu meta, como 200 soles por semana. Esto te daría un total de 1,600 soles en dos meses. \n\nAdemás, necesito saber si tienes alguna tarjeta de crédito al límite o si tienes margen disponible. Si tienes intereses altos, sería mejor priorizar saldar esos intereses para evitar endeudarte más.\n\nPara un plan más detallado, calculamos que el PS5 con GTA VI podría costar alrededor de 3,000 soles, dependiendo de las ofertas y precios futuros. Si logras ahorrar 200 soles por semana, en 14 semanas podrías tener 2,800 soles. Esto te permitiría alcanzar tu meta en poco más de tres meses, si no tienes otros gastos significativos.\n\n¿Quieres que te ayude a crear un plan más detallado que tenga en cuenta tus ingresos y gastos actuales? Así podríamos ajustar las cantidades y el plazo para que sea más realista y alcanzable. Además, te puedo dar consejos sobre cómo gestionar tus deudas y maximizar tus ahorros. Estoy aquí para ayudarte. ✨\n\n¿Te gustaría que te proporcione más consejos sobre cómo optimizar tus ahorros y gestionar tus gastos para alcanzar tu objetivo de comprar la PS5 con GTA VI?",
+      "formatted_time": "29/05/2025 13:37"
+    }
+  ],
+  "51997125199@c.us": [
+    {
+      "timestamp": "2025-05-29T19:57:06.340Z",
+      "user": "Hola",
+      "agent": "¡Hola ¿En qué puedo ayudarte hoy? ¿Necesitas algo sobre el mercado financiero, tienes alguna pregunta específica o simplemente quieres charlar un rato? Estoy aquí para ayudar.",
+      "formatted_time": "29/05/2025 14:57"
+    },
+    {
+      "timestamp": "2025-05-29T19:57:48.703Z",
+      "user": "Porfa, quisiera saber si comprar avena o arroz, es que solo me alcanza para uno",
+      "agent": "¡Claro Me alegra que me hayas hecho esta pregunta. Si solo tienes presupuesto para elegir entre avena o arroz, te diré que es una decisión bastante diferente dependiendo de tus necesidades. \n\nLa avena es muy rica en fibra, proteínas y beneficios para la salud, como reducir el colesterol y mejorar la digestión. Es una excelente opción si buscas una buena fuente de nutrientes. Por otro lado, el arroz es una gran fuente de carbohidratos y es más económico generalmente. También es muy versátil en la cocina, ya que se puede preparar de muchas maneras.\n\nSi lo que buscas es una opción más saludable y versátil para desayunos o snacks, la avena podría ser la mejor elección. Si prefieres algo más económico y versátil para diferentes comidas del día, el arroz es una excelente opción.\n\n¿Te gustaría que te dé algunas ideas de cómo preparar cualquiera de estos dos alimentos?",
+      "formatted_time": "29/05/2025 14:57"
+    }
+  ]
+}
