@@ -188,17 +188,19 @@ class ConversationMemory {
     }
 
     extractAmount(text) {
-        // Buscar patrones de dinero en el texto
+        // Buscar patrones de dinero en el texto - priorizando soles por defecto
         const patterns = [
-            /\$[\d,]+\.?\d*/g,
-            /[\d,]+\.?\d*\s*(pesos|dolares|soles)/gi,
-            /[\d,]+\.?\d*/g
+            /S\/[\d,]+\.?\d*/g,                          // S/100, S/1,500
+            /[\d,]+\.?\d*\s*soles?/gi,                   // 100 soles, 1500 sol
+            /\$[\d,]+\.?\d*/g,                           // $100 (puede ser pesos o dólares)
+            /[\d,]+\.?\d*\s*(pesos|dolares)/gi,          // 100 pesos, 200 dólares
+            /[\d,]+\.?\d*/g                              // 100 (asume soles por defecto)
         ];
 
         for (const pattern of patterns) {
             const matches = text.match(pattern);
             if (matches) {
-                const numStr = matches[0].replace(/[$,pesos|dolares|soles]/gi, '').trim();
+                const numStr = matches[0].replace(/[S\/\$,pesos|dolares|soles]/gi, '').trim();
                 const num = parseFloat(numStr);
                 if (!isNaN(num) && num > 0) {
                     return num;

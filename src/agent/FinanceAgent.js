@@ -1,11 +1,13 @@
 const { format, parseISO, isToday, isThisWeek, isThisMonth } = require('date-fns');
 const { v4: uuidv4 } = require('uuid');
 const PerplexityService = require('../services/PerplexityService');
+const ImageRecognitionService = require('../services/ImageRecognitionService');
 
 class FinanceAgent {
     constructor(memory) {
         this.memory = memory;
         this.perplexity = new PerplexityService();
+        this.imageRecognition = new ImageRecognitionService();
         
         this.personality = {
             name: "SofIA",
@@ -14,6 +16,7 @@ class FinanceAgent {
         };
 
         console.log(`🤖 FinanceAgent inicializado - TODO manejado por IA: ${this.perplexity.isConfigured() ? '✅' : '⚠️ Modo local'}`);
+        console.log(`📷 Reconocimiento de imágenes: ${this.imageRecognition.isConfigured() ? '✅' : '⚠️ No disponible'}`);
     }
 
     async generateResponse(userMessage, context, userId) {
@@ -36,6 +39,43 @@ class FinanceAgent {
         } catch (error) {
             console.error('Error generando respuesta:', error);
             return await this.getAIErrorResponse(userMessage, context);
+        }
+    }
+
+    async generateImageResponse(imageData, userMessage, context, userId, isBase64 = false) {
+        try {
+            console.log(`📷 Procesando imagen para usuario ${userId}: ${userMessage || 'Sin texto acompañante'}`);
+
+            // Detectar tipo de imagen basado en el mensaje del usuario
+            const imageType = this.imageRecognition.detectImageType(userMessage || '');
+            
+            let response;
+            
+            // Análisis específico según el tipo detectado
+            switch (imageType) {
+                case 'receipt':
+                    response = await this.imageRecognition.analyzeReceiptImage(imageData, context, isBase64);
+                    break;
+                case 'bank_statement':
+                    response = await this.imageRecognition.analyzeBankStatementImage(imageData, context, isBase64);
+                    break;
+                case 'financial_chart':
+                    response = await this.imageRecognition.analyzeFinancialChartImage(imageData, context, isBase64);
+                    break;
+                default:
+                    response = await this.imageRecognition.analyzeImageWithFinancialContext(imageData, userMessage, context, isBase64);
+                    break;
+            }
+
+            // Guardar el intercambio en memoria
+            const imageDescription = `[Imagen enviada: ${imageType}] ${userMessage || 'Imagen sin texto'}`;
+            this.memory.addMessage(userId, imageDescription, response);
+
+            return response;
+
+        } catch (error) {
+            console.error('❌ Error procesando imagen:', error);
+            return '📷 Ups, tuve un problema analizando tu imagen. ¿Podrías describirme qué contiene o intentar con otra imagen? 😊';
         }
     }
 
@@ -120,6 +160,11 @@ CONTEXTO:
 4. ¿Se menciona el nombre del usuario?
 5. ¿Necesita información financiera actualizada?
 
+IMPORTANTE - MANEJO DE MONEDAS:
+- Por defecto, asume que todas las cantidades son en SOLES PERUANOS (S/)
+- Solo usa otras monedas si el usuario las menciona explícitamente (dólares, pesos, euros, etc.)
+- Si detectas una cantidad pero no está clara la moneda, marca que necesita confirmación
+
 Analiza todo de forma inteligente y natural - NO uses patrones rígidos.`;
 
         return prompt;
@@ -163,13 +208,15 @@ Analiza todo de forma inteligente y natural - NO uses patrones rígidos.`;
             id: uuidv4(),
             amount: data.amount,
             source: data.source || 'No especificado',
+            currency: data.currency || 'soles',
             date: new Date().toISOString(),
             registered_at: new Date().toISOString(),
             ai_processed: true
         });
 
         this.memory.updateUserProfile(userId, userProfile);
-        console.log(`💰 [IA] Ingreso registrado: $${data.amount} (${data.source || 'No especificado'}) para usuario ${userId}`);
+        const currencySymbol = data.currency === 'dolares' ? '$' : data.currency === 'pesos' ? '$' : 'S/';
+        console.log(`💰 [IA] Ingreso registrado: ${currencySymbol}${data.amount} (${data.source || 'No especificado'}) para usuario ${userId}`);
     }
 
     async registerExpenseIntelligent(userId, data) {
@@ -182,13 +229,15 @@ Analiza todo de forma inteligente y natural - NO uses patrones rígidos.`;
             id: uuidv4(),
             amount: data.amount,
             category: data.category || 'General',
+            currency: data.currency || 'soles',
             date: new Date().toISOString(),
             registered_at: new Date().toISOString(),
             ai_processed: true
         });
 
         this.memory.updateUserProfile(userId, userProfile);
-        console.log(`💸 [IA] Gasto registrado: $${data.amount} (${data.category || 'General'}) para usuario ${userId}`);
+        const currencySymbol = data.currency === 'dolares' ? '$' : data.currency === 'pesos' ? '$' : 'S/';
+        console.log(`💸 [IA] Gasto registrado: ${currencySymbol}${data.amount} (${data.category || 'General'}) para usuario ${userId}`);
     }
 
     // Método para generar resumen financiero completamente con IA
@@ -253,7 +302,9 @@ Hubo un error técnico procesando su mensaje. Genera una respuesta natural y emp
             personality: this.personality,
             aiDriven: true,
             perplexityConfigured: this.perplexity.isConfigured(),
+            imageRecognitionConfigured: this.imageRecognition.isConfigured(),
             serviceStats: this.perplexity.getServiceStats(),
+            imageServiceStats: this.imageRecognition.getServiceStats(),
             usePatterns: false // Confirmación de que NO usa patrones
         };
     }

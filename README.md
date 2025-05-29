@@ -14,6 +14,15 @@ SofIA es tu asesora financiera personal que actúa como un amigo cercano. **Pote
 - **Decisiones contextuales** basadas en análisis semántico real
 - **Respuestas completamente naturales** sin templates
 
+### 📷 **Reconocimiento de Imágenes Financieras (NUEVO v2.1)**
+- ✅ **Análisis de recibos y comprobantes** automático por IA
+- ✅ **Interpretación de estados de cuenta bancarios** con OCR inteligente
+- ✅ **Lectura de gráficos financieros** y tablas de inversión
+- ✅ **Extracción de datos financieros** de cualquier imagen
+- ✅ **Protección de privacidad** (oculta números sensibles automáticamente)
+- ✅ **Registro automático** de transacciones encontradas en imágenes
+- ✅ **Consejos basados en imágenes** enviadas por el usuario
+
 ### 💼 **Funciones Financieras Inteligentes por IA**
 - ✅ **Detección automática por IA** de ingresos y gastos en lenguaje natural
 - ✅ **Categorización inteligente** sin patrones fijos
@@ -36,7 +45,7 @@ SofIA es tu asesora financiera personal que actúa como un amigo cercano. **Pote
 - Node.js (versión 16 o superior)
 - npm o yarn
 - WhatsApp instalado en tu teléfono
-- **API Key de Perplexity** (REQUERIDA para funcionalidad completa)
+- **API Key de Perplexity** (REQUERIDA para funcionalidad completa + imágenes)
 
 ### 1. Clonar e instalar dependencias
 ```bash
@@ -46,7 +55,7 @@ npm install
 ```
 
 ### 2. Configurar Perplexity Sonar (REQUERIDO)
-Para funcionalidad completa SIN patrones hardcodeados:
+Para funcionalidad completa SIN patrones hardcodeados + reconocimiento de imágenes:
 
 1. **Obtén tu API Key:**
    - Ve a [Perplexity AI](https://perplexity.ai)
@@ -76,7 +85,28 @@ npm test
 ### 4. Conectar WhatsApp
 1. Ejecuta el bot
 2. Escanea el código QR que aparece en la terminal con WhatsApp
-3. ¡SofIA estará lista con IA 100% inteligente!
+3. ¡SofIA estará lista con IA 100% inteligente + reconocimiento de imágenes!
+
+## 📷 Nuevas Capacidades de Imagen
+
+### Tipos de Imágenes Soportadas
+- **🧾 Recibos y facturas**: Extracción automática de montos, fechas y comercios
+- **🏦 Estados de cuenta**: Análisis de movimientos y patrones financieros
+- **📊 Gráficos financieros**: Interpretación de inversiones y tendencias
+- **💳 Documentos financieros**: Análisis general con protección de privacidad
+
+### Ejemplos de Uso con Imágenes
+```
+Usuario: [Envía foto de recibo del supermercado]
+SofIA: 📷 Perfecto! Veo tu compra en Walmart por $1,247.50 del 15/12/2024. 
+Incluye alimentos básicos y productos de limpieza 🛒 
+¿Quieres que lo registre en "Alimentación" o prefieres dividirlo en categorías?
+
+Usuario: [Envía estado de cuenta bancario]
+SofIA: 📊 Analicé tu estado de cuenta. Tienes un flujo saludable con $15,000 
+de ingresos regulares y gastos por $12,300. Tu ahorro mensual de $2,700 está 
+excelente! 💪 ¿Te muestro algunas oportunidades de optimización que detecto?
+```
 
 ## 💬 Cómo Funciona la IA Inteligente
 
@@ -89,11 +119,15 @@ if (message.includes("gasté")) {
 }
 ```
 
-**AHORA (100% IA):**
+**AHORA (100% IA + Imágenes):**
 ```
 Usuario: "Ayer se me fueron como veintitantos mil en el súper"
 IA analiza: "Detecta gasto de ~20,000 en supermercado"
 SofIA: "Entiendo que gastaste alrededor de $20,000 en el supermercado ayer 🛒..."
+
+Usuario: [Envía imagen de recibo]
+IA analiza: "Recibo Walmart, $1,247.50, fecha actual, productos alimentarios"
+SofIA: "Veo tu recibo de Walmart por $1,247.50. ¿Lo registro en alimentación? 🛒"
 ```
 
 ### Ejemplos de IA Inteligente
@@ -107,9 +141,9 @@ Usuario: "¿Cómo está la inflación ahora?"
 IA: Busca datos actuales de inflación en tiempo real
 SofIA: "Según los datos más recientes, la inflación está en 4.2%..."
 
-Usuario: "¿Es buen momento para invertir?"
-IA: Analiza condiciones actuales del mercado
-SofIA: "Basándome en las tendencias actuales del mercado..."
+Usuario: [Imagen de gráfico de inversiones]
+IA: Analiza el gráfico y extrae tendencias
+SofIA: "Tu gráfico muestra una tendencia alcista del 8.5% este trimestre 📈..."
 ```
 
 ## 🎯 Ventajas del Enfoque 100% IA
@@ -120,21 +154,24 @@ SofIA: "Basándome en las tendencias actuales del mercado..."
 - Reglas if/else predefinidas
 - Templates de respuestas fijas
 - Detección por palabras clave
+- OCR básico sin contexto
 
 ### ✅ **Lo que SÍ hacemos:**
-- **Análisis semántico real** de cada mensaje
+- **Análisis semántico real** de cada mensaje e imagen
 - **Decisiones contextuales** basadas en IA
 - **Respuestas únicas** para cada situación
 - **Aprendizaje de patrones naturales** del usuario
 - **Adaptación inteligente** al contexto conversacional
+- **OCR inteligente** con comprensión financiera
+- **Protección automática** de datos sensibles
 
 ## 🧠 Arquitectura de IA Avanzada
 
 ```
-Mensaje del Usuario
+Mensaje/Imagen del Usuario
         ↓
-    Perplexity IA
-    (Análisis completo)
+    Perplexity Sonar IA
+    (Análisis completo + OCR)
         ↓
     Decisión Inteligente
     {
@@ -144,7 +181,8 @@ Mensaje del Usuario
                 "type": "register_expense",
                 "data": {
                     "amount": 20000,
-                    "category": "Supermercado"
+                    "category": "Supermercado",
+                    "source": "imagen_recibo"
                 }
             }
         ]
@@ -160,7 +198,7 @@ Mensaje del Usuario
 ### Variables de Entorno
 
 ```bash
-# API Key (REQUERIDA para IA completa)
+# API Key (REQUERIDA para IA completa + imágenes)
 PERPLEXITY_API_KEY=tu_api_key
 
 # Configuraciones de IA
@@ -171,17 +209,33 @@ SOFIA_DEBUG_MODE=false          # Mostrar debug de IA
 
 ### Modos de Funcionamiento
 
-1. **Modo IA Completa** (Con API Key):
+1. **Modo IA Completa + Imágenes** (Con API Key):
    - **CERO patrones hardcodeados**
-   - Análisis inteligente de TODOS los mensajes
+   - Análisis inteligente de TODOS los mensajes e imágenes
+   - OCR avanzado con comprensión financiera
    - Decisiones contextuales por IA
    - Respuestas completamente naturales
    - Acceso a información actualizada del mercado
+   - Protección automática de datos sensibles
 
 2. **Modo Básico** (Sin API Key):
    - Funciones limitadas con respuestas amigables
+   - Sin capacidades de imagen
    - Registro manual básico
    - Sin análisis inteligente
+
+## 🔒 Seguridad y Privacidad con Imágenes
+
+- **Protección automática**: Oculta números de tarjetas y cuentas
+- **No almacenamiento**: Las imágenes no se guardan en el servidor
+- **Procesamiento local**: Análisis en tiempo real sin retención
+- **Datos sensibles**: Solo muestra últimos 4 dígitos si es necesario
+
+## 📋 Formatos de Imagen Soportados
+
+- **PNG, JPEG, WEBP, GIF** hasta 5MB
+- **Calidad automática**: Optimización inteligente
+- **OCR avanzado**: Reconocimiento de texto financiero especializado
 
 ## 🚨 Diferencias Clave con Otros Bots
 
@@ -191,6 +245,11 @@ SOFIA_DEBUG_MODE=false          # Mostrar debug de IA
 if "gané" in message or "recibí" in message:
     amount = extract_with_regex(message)
     category = check_keywords(message)
+
+# ❌ OCR básico
+text = basic_ocr(image)
+if "total" in text.lower():
+    # Regex para encontrar montos...
 ```
 
 ### SofIA con IA:
@@ -198,90 +257,20 @@ if "gané" in message or "recibí" in message:
 # ✅ Enfoque 100% IA
 ai_decision = await perplexity.analyze_message(message, context)
 intelligent_response = await perplexity.generate_response(decision)
-```
 
-## 📊 Capacidades de IA Específicas
-
-### 1. **Análisis Contextual Inteligente**
-- Entiende el flujo completo de la conversación
-- Recuerda preferencias y patrones del usuario
-- Adapta comunicación al nivel de relación
-
-### 2. **Extracción Inteligente de Datos**
-```
-"Ayer se me fueron como veinte lucas en delivery"
-↓ IA extrae: $20,000, Categoría: "Delivery/Comida"
-
-"Cobré mi sueldo de sesenta y cinco mil"
-↓ IA extrae: $65,000, Fuente: "Salario"
-```
-
-### 3. **Búsqueda Financiera en Tiempo Real**
-- Tasas de interés actuales
-- Inflación y economía
-- Mercados de inversión
-- Análisis de riesgo contextual
-
-## 🔍 Pruebas de IA
-
-```bash
-# Probar capacidades de IA
-npm test
-
-# Ejemplos de pruebas automáticas:
-"Este mes cobré setenta y cinco mil del laburo"
-"Se me fueron quinientos mangos en delivery"
-"¿Es verdad que la inflación está alta?"
-"¿Me conviene meter plata en dólares?"
-```
-
-## 💰 Optimización de Costos de IA
-
-### Configuración Inteligente de Costos
-```bash
-# Para uso básico
-SOFIA_SEARCH_CONTEXT_SIZE=low
-SOFIA_MAX_TOKENS=800
-
-# Para análisis profundo
-SOFIA_SEARCH_CONTEXT_SIZE=high
-SOFIA_MAX_TOKENS=1500
-```
-
-### Precios Perplexity
-- **Sonar Pro**: ~$0.001 por consulta
-- **Búsquedas web**: Incluidas en el plan
-- **Optimización**: SofIA usa contexto inteligente para minimizar costos
-
-## 🎯 ¡Listo para IA Avanzada!
-
-**SofIA con IA 100% inteligente te ofrece:**
-- 🧠 **Cero patrones hardcodeados**
-- 🤖 **Análisis completamente por IA**
-- 💬 **Conversaciones verdaderamente naturales**
-- 📊 **Información financiera en tiempo real**
-- 🎯 **Consejos específicos para cada situación**
-- 🔄 **Adaptación inteligente al contexto**
-
-### Comandos Rápidos
-
-```bash
-# Instalar
-npm install
-
-# Configurar IA (REQUERIDO)
-cp env.example .env
-# Editar .env con tu PERPLEXITY_API_KEY
-
-# Probar IA
-npm test
-
-# Usar en WhatsApp con IA completa
-npm start
+# ✅ OCR inteligente
+financial_analysis = await sonar_pro.analyze_financial_image(image, context)
+contextual_response = await ai.generate_financial_advice(analysis)
 ```
 
 ---
 
-💡 **¿Necesitas ayuda?** Abre un issue en GitHub
+## 📖 Documentación Adicional
 
-🎉 **¡Disfruta de SofIA con IA 100% inteligente - sin patrones hardcodeados!**
+- [📷 Guía de Reconocimiento de Imágenes](docs/reconocimiento-imagenes.md)
+- [🚀 Casos de Uso del Agente](casos-de-uso-agente-financiero.md)
+- [💰 Funciones para Usuarios Básicos](funciones-esenciales-usuarios-basicos.md)
+
+---
+
+**SofIA v2.1 - La evolución de la asesoría financiera inteligente con capacidades visuales avanzadas** 🚀📷

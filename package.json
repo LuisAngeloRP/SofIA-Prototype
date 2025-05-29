@@ -1,12 +1,14 @@
 {
   "name": "sofia-finance-advisor",
-  "version": "1.0.0",
-  "description": "Agente de IA conversacional para asesoría financiera en WhatsApp",
+  "version": "2.1.0",
+  "description": "Agente de IA conversacional para asesoría financiera en WhatsApp con reconocimiento de imágenes financieras",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "node test-bot.js"
+    "test": "node test-bot.js",
+    "test:images": "node test-image-recognition.js",
+    "test:ai-vs-ai": "node test-ai-vs-ai.js"
   },
   "dependencies": {
     "whatsapp-web.js": "^1.23.0",
@@ -21,7 +23,7 @@
   "devDependencies": {
     "nodemon": "^3.0.2"
   },
-  "keywords": ["whatsapp", "ai", "finance", "advisor", "conversational-ai"],
+  "keywords": ["whatsapp", "ai", "finance", "advisor", "conversational-ai", "image-recognition", "ocr", "perplexity"],
   "author": "SofIA",
   "license": "MIT"
 } 

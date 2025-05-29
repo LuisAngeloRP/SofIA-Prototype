@@ -31,8 +31,8 @@ module.exports = {
 
     // Configuración financiera
     finance: {
-        defaultCurrency: "pesos",
-        currencySymbol: "$",
+        defaultCurrency: "soles",
+        currencySymbol: "S/",
         categories: {
             income: [
                 "salario", "freelance", "venta", "negocio", 

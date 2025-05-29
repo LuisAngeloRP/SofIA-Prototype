@@ -96,6 +96,13 @@ INSTRUCCIONES INTELIGENTES:
 7. Siempre incluye una pregunta de seguimiento natural cuando sea apropiado
 8. Responde como si fueras realmente su asesora financiera personal
 
+MANEJO DE MONEDAS - MUY IMPORTANTE:
+- Por defecto, todas las cantidades monetarias son en SOLES PERUANOS (S/) 
+- Si mencionan una cantidad sin especificar moneda, asume que son soles
+- Si no está claro la moneda, pregunta específicamente: "¿Te refieres a soles peruanos?"
+- Solo usa otras monedas (dólares, pesos) si el usuario las menciona explícitamente
+- Cuando registres transacciones, siempre clarifica la moneda si hay duda
+
 ESTILO DE COMUNICACIÓN:
 - Máximo 3-4 oraciones por respuesta
 - Lenguaje casual pero profesional
@@ -125,21 +132,23 @@ ESTILO DE COMUNICACIÓN:
             
             if (financialData.income?.length > 0) {
                 const totalIncome = financialData.income.reduce((sum, item) => sum + item.amount, 0);
-                prompt += `\n- Ingresos registrados: $${totalIncome.toLocaleString()} (${financialData.income.length} transacciones)`;
+                prompt += `\n- Ingresos registrados: S/${totalIncome.toLocaleString()} (${financialData.income.length} transacciones)`;
                 
                 const recentIncome = financialData.income.slice(-2);
                 recentIncome.forEach(income => {
-                    prompt += `\n  • $${income.amount.toLocaleString()} de ${income.source}`;
+                    const currencySymbol = income.currency === 'dolares' ? '$' : income.currency === 'pesos' ? '$' : 'S/';
+                    prompt += `\n  • ${currencySymbol}${income.amount.toLocaleString()} de ${income.source}`;
                 });
             }
             
             if (financialData.expenses?.length > 0) {
                 const totalExpenses = financialData.expenses.reduce((sum, item) => sum + item.amount, 0);
-                prompt += `\n- Gastos registrados: $${totalExpenses.toLocaleString()} (${financialData.expenses.length} transacciones)`;
+                prompt += `\n- Gastos registrados: S/${totalExpenses.toLocaleString()} (${financialData.expenses.length} transacciones)`;
                 
                 const recentExpenses = financialData.expenses.slice(-2);
                 recentExpenses.forEach(expense => {
-                    prompt += `\n  • $${expense.amount.toLocaleString()} en ${expense.category}`;
+                    const currencySymbol = expense.currency === 'dolares' ? '$' : expense.currency === 'pesos' ? '$' : 'S/';
+                    prompt += `\n  • ${currencySymbol}${expense.amount.toLocaleString()} en ${expense.category}`;
                 });
             }
         }
@@ -151,7 +160,14 @@ ESTILO DE COMUNICACIÓN:
 - Si necesitan consejos, dáselos específicos para su situación
 - Si es conversación casual, mantén el tono amigable y financiero
 - Adapta completamente tu respuesta a este contexto específico
-- No uses respuestas genéricas - cada respuesta debe ser única para esta situación`;
+- No uses respuestas genéricas - cada respuesta debe ser única para esta situación
+
+MANEJO DE MONEDAS - REGLAS CLAVE:
+- Por defecto, todas las cantidades son en SOLES PERUANOS (S/)
+- Si mencionan una cantidad sin especificar moneda, asume soles
+- Si hay duda sobre la moneda, pregunta: "¿Te refieres a soles peruanos?"
+- Usa el símbolo S/ para soles en tus respuestas
+- Solo considera otras monedas si las mencionan explícitamente`;
 
         return prompt;
     }
@@ -188,9 +204,9 @@ Estoy aquí para ayudarte con tus finanzas de manera súper natural y práctica.
             const analysisPrompt = `Como SofIA, analiza inteligentemente la situación financiera de ${userName || 'este usuario'} y proporciona consejos específicos:
 
 DATOS FINANCIEROS COMPLETOS:
-- Ingresos totales: $${financialData.totalIncome.toLocaleString()}
-- Gastos totales: $${financialData.totalExpenses.toLocaleString()}  
-- Balance actual: $${financialData.balance.toLocaleString()}
+- Ingresos totales: S/${financialData.totalIncome.toLocaleString()}
+- Gastos totales: S/${financialData.totalExpenses.toLocaleString()}  
+- Balance actual: S/${financialData.balance.toLocaleString()}
 - Transacciones de ingresos: ${financialData.incomeCount}
 - Transacciones de gastos: ${financialData.expenseCount}
 
@@ -247,7 +263,8 @@ Genera un análisis conversacional completo, no un reporte técnico.`;
             formatted += "📈 INGRESOS REGISTRADOS:\n";
             financialData.income.forEach((income, index) => {
                 const date = new Date(income.date).toLocaleDateString();
-                formatted += `${index + 1}. $${income.amount.toLocaleString()} - ${income.source} (${date})\n`;
+                const currencySymbol = income.currency === 'dolares' ? '$' : income.currency === 'pesos' ? '$' : 'S/';
+                formatted += `${index + 1}. ${currencySymbol}${income.amount.toLocaleString()} - ${income.source} (${date})\n`;
             });
         }
         
@@ -255,7 +272,8 @@ Genera un análisis conversacional completo, no un reporte técnico.`;
             formatted += "\n📉 GASTOS REGISTRADOS:\n";
             financialData.expenses.forEach((expense, index) => {
                 const date = new Date(expense.date).toLocaleDateString();
-                formatted += `${index + 1}. $${expense.amount.toLocaleString()} - ${expense.category} (${date})\n`;
+                const currencySymbol = expense.currency === 'dolares' ? '$' : expense.currency === 'pesos' ? '$' : 'S/';
+                formatted += `${index + 1}. ${currencySymbol}${expense.amount.toLocaleString()} - ${expense.category} (${date})\n`;
             });
         }
         
@@ -266,11 +284,11 @@ Genera un análisis conversacional completo, no un reporte técnico.`;
         const { totalIncome, totalExpenses, balance } = financialData;
         
         if (balance > 0) {
-            return `¡Excelente ${userName}! 🎉 Tienes un balance positivo de $${balance.toLocaleString()}. Con IA avanzada podría darte consejos específicos de inversión basados en condiciones actuales del mercado 📈`;
+            return `¡Excelente ${userName}! 🎉 Tienes un balance positivo de S/${balance.toLocaleString()}. Con IA avanzada podría darte consejos específicos de inversión basados en condiciones actuales del mercado 📈`;
         } else if (balance === 0) {
             return `${userName}, estás equilibrado 👍 Tus ingresos y gastos están parejos. Con mi IA completa podría analizar el mercado y sugerir estrategias específicas de ahorro 💪`;
         } else {
-            return `${userName}, veo que tus gastos superan tus ingresos por $${Math.abs(balance).toLocaleString()} 🤔 Con IA avanzada podría buscar estrategias actuales de optimización financiera específicas para tu situación`;
+            return `${userName}, veo que tus gastos superan tus ingresos por S/${Math.abs(balance).toLocaleString()} 🤔 Con IA avanzada podría buscar estrategias actuales de optimización financiera específicas para tu situación`;
         }
     }
 

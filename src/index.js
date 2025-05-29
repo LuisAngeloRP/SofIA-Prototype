@@ -34,11 +34,19 @@ class SofiaFinanceBot {
             // Mostrar información de configuración
             const agentStats = this.agent.getAgentStats();
             console.log(`🤖 Motor IA: ${agentStats.perplexityConfigured ? 'Perplexity Sonar ✅' : 'Modo Local ⚠️'}`);
+            console.log(`📷 Reconocimiento de imágenes: ${agentStats.imageRecognitionConfigured ? 'Activado ✅' : 'No disponible ⚠️'}`);
+            
             if (agentStats.perplexityConfigured) {
                 console.log(`📡 Modelo: ${agentStats.serviceStats.model}`);
                 console.log(`🔍 Contexto de búsqueda: ${agentStats.serviceStats.searchContextSize}`);
+                
+                if (agentStats.imageRecognitionConfigured) {
+                    console.log(`🖼️ Modelo de imágenes: ${agentStats.imageServiceStats.model}`);
+                    console.log(`📋 Formatos soportados: ${agentStats.imageServiceStats.supportedFormats.join(', ')}`);
+                    console.log(`📏 Tamaño máximo: ${agentStats.imageServiceStats.maxImageSize}`);
+                }
             } else {
-                console.log('💡 Para usar IA avanzada, configura PERPLEXITY_API_KEY en archivo .env');
+                console.log('💡 Para usar IA avanzada e imágenes, configura PERPLEXITY_API_KEY en archivo .env');
             }
         });
 
@@ -53,24 +61,63 @@ class SofiaFinanceBot {
 
     async handleMessage(message) {
         try {
-            // Solo responder a mensajes de texto y evitar grupos
-            if (message.type !== 'chat' || message.from.includes('@g.us')) {
+            // Evitar grupos
+            if (message.from.includes('@g.us')) {
                 return;
             }
 
             const userNumber = message.from;
-            const userMessage = message.body;
+            let userMessage = '';
+            let isImageMessage = false;
 
-            console.log(`📨 Mensaje de ${userNumber}: ${userMessage}`);
+            // Manejar diferentes tipos de mensajes
+            if (message.type === 'chat') {
+                userMessage = message.body;
+            } else if (message.type === 'image') {
+                isImageMessage = true;
+                userMessage = message.body || ''; // Caption de la imagen si existe
+                
+                console.log(`📷 Imagen recibida de ${userNumber} con caption: "${userMessage}"`);
+            } else {
+                // Otros tipos de mensaje no soportados
+                return;
+            }
+
+            console.log(`📨 Mensaje de ${userNumber}: ${isImageMessage ? '[IMAGEN]' : userMessage} ${userMessage ? `- "${userMessage}"` : ''}`);
 
             // Obtener el contexto de la conversación
             const conversationContext = this.memory.getConversationContext(userNumber);
             
-            // Generar respuesta del agente con IA
-            const response = await this.agent.generateResponse(userMessage, conversationContext, userNumber);
-            
-            // Guardar el intercambio en memoria
-            this.memory.addMessage(userNumber, userMessage, response);
+            let response;
+
+            if (isImageMessage) {
+                try {
+                    // Descargar la imagen como base64
+                    const media = await message.downloadMedia();
+                    
+                    if (!media) {
+                        response = '📷 Lo siento, no pude descargar tu imagen. ¿Podrías intentar enviarla otra vez? 😊';
+                    } else {
+                        // Procesar imagen con IA
+                        response = await this.agent.generateImageResponse(
+                            media.data,
+                            userMessage,
+                            conversationContext,
+                            userNumber,
+                            true // isBase64 = true
+                        );
+                    }
+                } catch (error) {
+                    console.error('❌ Error descargando imagen:', error);
+                    response = '📷 Ups, tuve un problema descargando tu imagen. ¿Podrías enviarla de nuevo? 😅';
+                }
+            } else {
+                // Generar respuesta del agente con IA para mensajes de texto
+                response = await this.agent.generateResponse(userMessage, conversationContext, userNumber);
+                
+                // Guardar el intercambio en memoria
+                this.memory.addMessage(userNumber, userMessage, response);
+            }
 
             // Enviar respuesta
             await message.reply(response);
@@ -97,16 +144,17 @@ class SofiaFinanceBot {
 
 // Mostrar información de inicio
 console.log('╔════════════════════════════════════════╗');
-console.log('║       SofIA Finance Advisor v2.0      ║');
-console.log('║    IA Conversacional con Perplexity   ║');
+console.log('║       SofIA Finance Advisor v2.1      ║');
+console.log('║   IA Conversacional + Reconocimiento  ║');
+console.log('║          de Imágenes Financieras       ║');
 console.log('╚════════════════════════════════════════╝');
 
 // Verificar configuración de Perplexity
 if (process.env.PERPLEXITY_API_KEY) {
-    console.log('✅ API Key de Perplexity detectada - Modo IA Avanzada');
+    console.log('✅ API Key de Perplexity detectada - Modo IA Avanzada + Imágenes');
 } else {
-    console.log('⚠️ Sin API Key de Perplexity - Modo Local');
-    console.log('💡 Crea un archivo .env con PERPLEXITY_API_KEY=tu_api_key para IA avanzada');
+    console.log('⚠️ Sin API Key de Perplexity - Modo Local (sin reconocimiento de imágenes)');
+    console.log('💡 Crea un archivo .env con PERPLEXITY_API_KEY=tu_api_key para IA + imágenes');
 }
 
 // Inicializar el bot
