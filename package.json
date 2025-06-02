@@ -1,33 +1,55 @@
 {
   "name": "sofia-finance-advisor",
   "version": "2.1.0",
-  "description": "Agente de IA conversacional para asesoría financiera en WhatsApp con reconocimiento de imágenes financieras",
+  "description": "Agente de IA conversacional para asesoría financiera en WhatsApp y Web con reconocimiento de imágenes financieras",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "node test-bot.js",
-    "test:images": "node test-image-recognition.js",
-    "test:ai-vs-ai": "node test-ai-vs-ai.js",
+    "help": "node src/index.js --help",
+    "whatsapp:start": "node src/platforms/whatsapp/server.js",
+    "whatsapp:dev": "nodemon src/platforms/whatsapp/server.js",
+    "web:start": "node src/platforms/web/server.js",
+    "web:dev": "nodemon src/platforms/web/server.js",
     "webapp:dev": "cd webapp && npm run dev",
     "webapp:build": "cd webapp && npm run build",
     "webapp:start": "cd webapp && npm start",
-    "webapp:install": "cd webapp && npm install"
+    "webapp:install": "cd webapp && npm install",
+    "setup:webapp": "npx create-next-app@latest webapp --typescript --tailwind --eslint --app",
+    "test": "node test-bot.js",
+    "test:images": "node test-image-recognition.js",
+    "test:ai-vs-ai": "node test-ai-vs-ai.js",
+    "status": "node check-status.js",
+    "check": "node check-status.js"
   },
   "dependencies": {
-    "whatsapp-web.js": "^1.23.0",
-    "qrcode-terminal": "^0.12.0",
-    "fs": "^0.0.1-security",
-    "path": "^0.12.7",
+    "cors": "^2.8.5",
     "date-fns": "^2.30.0",
-    "uuid": "^9.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
     "openai": "^4.0.0",
-    "dotenv": "^16.3.1"
+    "path": "^0.12.7",
+    "qrcode-terminal": "^0.12.0",
+    "socket.io": "^4.8.1",
+    "uuid": "^9.0.1",
+    "whatsapp-web.js": "^1.23.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
   },
-  "keywords": ["whatsapp", "ai", "finance", "advisor", "conversational-ai", "image-recognition", "ocr", "perplexity"],
+  "keywords": [
+    "whatsapp",
+    "ai",
+    "finance",
+    "advisor",
+    "conversational-ai",
+    "image-recognition",
+    "ocr",
+    "perplexity",
+    "nextjs",
+    "webapp"
+  ],
   "author": "SofIA",
   "license": "MIT"
-} 
+}

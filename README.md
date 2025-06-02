@@ -1,51 +1,70 @@
-# SofIA Finance Advisor 💰
+# SofIA Finance Advisor 💰 v2.1
 
-**Agente de IA 100% inteligente para asesoría financiera personal en WhatsApp**
+**Agente de IA Multi-Plataforma para asesoría financiera personal**
 
-SofIA es tu asesora financiera personal que actúa como un amigo cercano. **Potenciada completamente por Perplexity Sonar**, SIN patrones de texto hardcodeados - TODO es manejado por inteligencia artificial real.
+SofIA es tu asesora financiera personal que funciona tanto en **WhatsApp** como en una **aplicación web moderna**. Potenciada completamente por **Perplexity Sonar**, con reconocimiento de imágenes financieras y **100% IA** - sin patrones hardcodeados.
 
 ## 🌟 Características Principales
+
+### 🚀 **Multi-Plataforma**
+- ✅ **WhatsApp Bot**: Chat directo por WhatsApp
+- ✅ **Web App**: Interfaz moderna con NextJS + TypeScript
+- ✅ **API REST**: Endpoints para integraciones
+- ✅ **WebSocket**: Comunicación en tiempo real
+- ✅ **Arquitectura Modular**: Fácil agregar nuevas plataformas
 
 ### 🧠 **100% IA-Driven - Sin Patrones Hardcodeados**
 - **CERO detección de patrones de texto** - TODO es manejado por IA
 - **Motor de IA real** usando Perplexity Sonar API para TODAS las decisiones
 - **Análisis inteligente** de cada mensaje sin reglas predefinidas
-- **Extracción automática** de información financiera por IA
-- **Decisiones contextuales** basadas en análisis semántico real
 - **Respuestas completamente naturales** sin templates
 
-### 📷 **Reconocimiento de Imágenes Financieras (NUEVO v2.1)**
+### 📷 **Reconocimiento de Imágenes Financieras**
 - ✅ **Análisis de recibos y comprobantes** automático por IA
 - ✅ **Interpretación de estados de cuenta bancarios** con OCR inteligente
 - ✅ **Lectura de gráficos financieros** y tablas de inversión
 - ✅ **Extracción de datos financieros** de cualquier imagen
 - ✅ **Protección de privacidad** (oculta números sensibles automáticamente)
-- ✅ **Registro automático** de transacciones encontradas en imágenes
-- ✅ **Consejos basados en imágenes** enviadas por el usuario
 
-### 💼 **Funciones Financieras Inteligentes por IA**
+### 💼 **Funciones Financieras Inteligentes**
 - ✅ **Detección automática por IA** de ingresos y gastos en lenguaje natural
 - ✅ **Categorización inteligente** sin patrones fijos
 - ✅ **Análisis financiero completamente generado por IA**
 - ✅ **Consejos basados en datos actuales del mercado en tiempo real**
-- ✅ **Extracción de cantidades y categorías por IA** (no regex)
 - ✅ **Resúmenes financieros adaptativos** según contexto específico
-- ✅ **Reconocimiento de nombres e información personal por IA**
 
-### 🚀 **Inteligencia Artificial Avanzada**
-- Cada mensaje es **analizado completamente por IA** para decidir qué hacer
-- **Prompts contextuales dinámicos** que se adaptan a cada situación
-- **Búsqueda en tiempo real** de información financiera actualizada
-- **Análisis de mercado actual** para consejos específicos
-- **Respuestas únicas** para cada conversación (nunca genéricas)
+## 🏗️ Nueva Arquitectura Multi-Plataforma
+
+```
+SofIA-Prototype/
+├── src/
+│   ├── core/                    # Lógica central compartida
+│   │   ├── agent/              # Agente de IA financiera
+│   │   ├── services/           # Servicios (Perplexity, OCR)
+│   │   ├── memory/             # Gestión de memoria/conversaciones
+│   │   └── config/             # Configuraciones
+│   ├── platforms/              # Plataformas específicas
+│   │   ├── whatsapp/           # Implementación WhatsApp
+│   │   ├── web/                # Implementación Web API
+│   │   └── server.js           # Servidor multi-plataforma
+│   ├── shared/                 # Utilidades compartidas
+│   └── index.js                # Punto de entrada principal
+├── webapp/                     # Aplicación NextJS
+│   └── src/
+│       ├── app/                # App Router de NextJS 15
+│       ├── components/         # Componentes React
+│       ├── hooks/              # Hooks personalizados
+│       ├── lib/                # Utilidades y API client
+│       └── types/              # Tipos TypeScript
+└── docs/                       # Documentación completa
+```
 
 ## 🚀 Instalación y Configuración
 
 ### Prerrequisitos
-- Node.js (versión 16 o superior)
+- Node.js (versión 18 o superior)
 - npm o yarn
-- WhatsApp instalado en tu teléfono
-- **API Key de Perplexity** (REQUERIDA para funcionalidad completa + imágenes)
+- **API Key de Perplexity** (REQUERIDA para funcionalidad completa)
 
 ### 1. Clonar e instalar dependencias
 ```bash
@@ -54,223 +73,248 @@ cd SofIA-Prototype
 npm install
 ```
 
-### 2. Configurar Perplexity Sonar (REQUERIDO)
-Para funcionalidad completa SIN patrones hardcodeados + reconocimiento de imágenes:
-
-1. **Obtén tu API Key:**
-   - Ve a [Perplexity AI](https://perplexity.ai)
-   - Crea una cuenta y obtén tu API key
-
-2. **Configura las variables de entorno:**
+### 2. Configurar Variables de Entorno
 ```bash
 # Copia el archivo de ejemplo
 cp env.example .env
 
-# Edita .env y agrega tu API key
+# Edita .env y configura:
 PERPLEXITY_API_KEY=tu_api_key_aqui
+
+# Configuración de plataformas (opcional)
+ENABLE_WHATSAPP=true
+ENABLE_WEB=true
+API_PORT=3001
+WEBAPP_URL=http://localhost:3000
 ```
 
-### 3. Ejecutar el bot
+### 3. Configurar WebApp (NextJS)
 ```bash
-# Modo desarrollo
-npm run dev
+# Instalar dependencias de la webapp
+npm run webapp:install
 
-# Modo producción
+# Configurar variables de entorno de la webapp
+cd webapp
+echo "NEXT_PUBLIC_API_URL=http://localhost:3001" > .env.local
+cd ..
+```
+
+## 🎯 Modos de Ejecución
+
+### Multi-Plataforma (Recomendado)
+```bash
+# Ejecutar ambas plataformas
 npm start
 
-# Probar el agente IA
-npm test
+# En otra terminal, ejecutar la webapp
+npm run webapp:dev
 ```
 
-### 4. Conectar WhatsApp
-1. Ejecuta el bot
-2. Escanea el código QR que aparece en la terminal con WhatsApp
-3. ¡SofIA estará lista con IA 100% inteligente + reconocimiento de imágenes!
-
-## 📷 Nuevas Capacidades de Imagen
-
-### Tipos de Imágenes Soportadas
-- **🧾 Recibos y facturas**: Extracción automática de montos, fechas y comercios
-- **🏦 Estados de cuenta**: Análisis de movimientos y patrones financieros
-- **📊 Gráficos financieros**: Interpretación de inversiones y tendencias
-- **💳 Documentos financieros**: Análisis general con protección de privacidad
-
-### Ejemplos de Uso con Imágenes
-```
-Usuario: [Envía foto de recibo del supermercado]
-SofIA: 📷 Perfecto! Veo tu compra en Walmart por $1,247.50 del 15/12/2024. 
-Incluye alimentos básicos y productos de limpieza 🛒 
-¿Quieres que lo registre en "Alimentación" o prefieres dividirlo en categorías?
-
-Usuario: [Envía estado de cuenta bancario]
-SofIA: 📊 Analicé tu estado de cuenta. Tienes un flujo saludable con $15,000 
-de ingresos regulares y gastos por $12,300. Tu ahorro mensual de $2,700 está 
-excelente! 💪 ¿Te muestro algunas oportunidades de optimización que detecto?
-```
-
-## 💬 Cómo Funciona la IA Inteligente
-
-### Análisis Completamente por IA
-
-**ANTES (con patrones):**
-```
-if (message.includes("gasté")) {
-    // Lógica hardcodeada...
-}
-```
-
-**AHORA (100% IA + Imágenes):**
-```
-Usuario: "Ayer se me fueron como veintitantos mil en el súper"
-IA analiza: "Detecta gasto de ~20,000 en supermercado"
-SofIA: "Entiendo que gastaste alrededor de $20,000 en el supermercado ayer 🛒..."
-
-Usuario: [Envía imagen de recibo]
-IA analiza: "Recibo Walmart, $1,247.50, fecha actual, productos alimentarios"
-SofIA: "Veo tu recibo de Walmart por $1,247.50. ¿Lo registro en alimentación? 🛒"
-```
-
-### Ejemplos de IA Inteligente
-
-```
-Usuario: "Este mes cobré setenta y cinco lucas del laburo"
-IA: Extrae automáticamente $75,000 como ingreso laboral
-SofIA: "¡Perfecto! Registré tu ingreso de $75,000 del trabajo 💼..."
-
-Usuario: "¿Cómo está la inflación ahora?"
-IA: Busca datos actuales de inflación en tiempo real
-SofIA: "Según los datos más recientes, la inflación está en 4.2%..."
-
-Usuario: [Imagen de gráfico de inversiones]
-IA: Analiza el gráfico y extrae tendencias
-SofIA: "Tu gráfico muestra una tendencia alcista del 8.5% este trimestre 📈..."
-```
-
-## 🎯 Ventajas del Enfoque 100% IA
-
-### ❌ **Lo que NO hacemos (y odias):**
-- Patrones de texto rígidos
-- Regex hardcodeadas
-- Reglas if/else predefinidas
-- Templates de respuestas fijas
-- Detección por palabras clave
-- OCR básico sin contexto
-
-### ✅ **Lo que SÍ hacemos:**
-- **Análisis semántico real** de cada mensaje e imagen
-- **Decisiones contextuales** basadas en IA
-- **Respuestas únicas** para cada situación
-- **Aprendizaje de patrones naturales** del usuario
-- **Adaptación inteligente** al contexto conversacional
-- **OCR inteligente** con comprensión financiera
-- **Protección automática** de datos sensibles
-
-## 🧠 Arquitectura de IA Avanzada
-
-```
-Mensaje/Imagen del Usuario
-        ↓
-    Perplexity Sonar IA
-    (Análisis completo + OCR)
-        ↓
-    Decisión Inteligente
-    {
-        "intent": "financial_transaction",
-        "actions": [
-            {
-                "type": "register_expense",
-                "data": {
-                    "amount": 20000,
-                    "category": "Supermercado",
-                    "source": "imagen_recibo"
-                }
-            }
-        ]
-    }
-        ↓
-    Ejecución de Acciones
-        ↓
-    Respuesta Natural por IA
-```
-
-## 🔧 Configuración de IA Avanzada
-
-### Variables de Entorno
-
+### Solo WhatsApp
 ```bash
-# API Key (REQUERIDA para IA completa + imágenes)
+ENABLE_WEB=false npm start
+```
+
+### Solo Web API + WebApp
+```bash
+ENABLE_WHATSAPP=false npm start
+# En otra terminal:
+npm run webapp:dev
+```
+
+### Solo WhatsApp Platform
+```bash
+npm run whatsapp:dev
+```
+
+### Solo Web API
+```bash
+node src/platforms/web/server.js
+```
+
+## 📱 Usando SofIA
+
+### WhatsApp
+1. Ejecuta `npm start` o `npm run whatsapp:dev`
+2. Escanea el código QR que aparece en la terminal
+3. ¡Envía mensajes a SofIA desde WhatsApp!
+
+### Web App
+1. Ejecuta el backend: `npm start` o `node src/platforms/web/server.js`
+2. Ejecuta la webapp: `npm run webapp:dev`
+3. Abre `http://localhost:3000` en tu navegador
+4. ¡Chatea con SofIA desde la web!
+
+## 🔧 API Endpoints
+
+### REST API
+- `GET /health` - Estado del servidor
+- `POST /api/chat` - Enviar mensaje de texto
+- `POST /api/chat/image` - Enviar imagen con IA
+- `GET /api/conversation/:sessionId` - Obtener historial
+- `DELETE /api/conversation/:sessionId` - Limpiar conversación
+
+### WebSocket Events
+- `join-session` - Unirse a sesión
+- `send-message` - Enviar mensaje en tiempo real
+- `message` - Recibir mensaje del bot
+- `agent-status` - Estado de la IA
+
+## 💡 Ejemplos de Uso
+
+### Mensajes de Texto
+```
+Usuario: "Gasté $1,500 en el súper ayer"
+SofIA: "Registré tu gasto de $1,500 en alimentación 🛒. 
+¿Te gustaría que analice tus gastos del mes en supermercado?"
+
+Usuario: "¿Cómo está mi presupuesto este mes?"
+SofIA: "Has gastado $12,450 de tu presupuesto de $15,000 (83%). 
+Te quedan $2,550 para los próximos 8 días. ¡Vas muy bien! 💪"
+```
+
+### Análisis de Imágenes
+```
+[Usuario envía foto de recibo]
+SofIA: "📷 Veo tu recibo de Walmart por $1,247.50 del 15/12/2024. 
+Incluye alimentos básicos y productos de limpieza 🛒 
+¿Lo registro en 'Alimentación' o prefieres dividirlo en categorías?"
+
+[Usuario envía estado de cuenta]
+SofIA: "📊 Analicé tu estado de cuenta. Tienes un flujo saludable 
+con $15,000 de ingresos y gastos por $12,300. Tu ahorro mensual 
+de $2,700 está excelente! 💪"
+```
+
+## 🛠️ Desarrollo
+
+### Estructura del Proyecto
+- **Core**: Lógica compartida entre plataformas
+- **Platforms**: Implementaciones específicas (WhatsApp, Web)
+- **WebApp**: Interfaz NextJS con TypeScript
+- **Shared**: Utilidades comunes
+- **Docs**: Documentación técnica
+
+### Agregar Nueva Plataforma
+1. Crear directorio en `src/platforms/nueva-plataforma/`
+2. Implementar servidor específico
+3. Reutilizar componentes del core
+4. Agregar configuración en multi-platform server
+
+### Testing
+```bash
+# Tests del backend
+npm test
+
+# Tests de imágenes
+npm run test:images
+
+# Tests de IA
+npm run test:ai-vs-ai
+```
+
+## 🚀 Despliegue
+
+### Opciones de Despliegue
+1. **Microservicios** (Producción): EC2 + ECS Fargate + RDS
+2. **Simplificada** (MVP): EC2 Multi-Platform
+3. **Serverless** (Solo Web): Lambda + API Gateway
+
+### Costos Estimados (AWS)
+- **Producción**: ~$100/mes (alta disponibilidad)
+- **MVP**: ~$37/mes (una instancia EC2)
+- **Serverless**: ~$21/mes (pay-per-use)
+
+Ver [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) para guía completa de despliegue.
+
+## 📚 Documentación
+
+- [Arquitectura](docs/ARCHITECTURE.md) - Estructura técnica detallada
+- [Despliegue](docs/DEPLOYMENT.md) - Guía completa de AWS
+- [Setup](setup.md) - Configuración paso a paso
+
+## 🔑 Variables de Entorno
+
+### Backend
+```bash
+# Requeridas
 PERPLEXITY_API_KEY=tu_api_key
 
-# Configuraciones de IA
-SOFIA_MAX_TOKENS=1500           # Tokens máximos por respuesta
-SOFIA_SEARCH_CONTEXT_SIZE=high  # low, medium, high
-SOFIA_DEBUG_MODE=false          # Mostrar debug de IA
+# Configuración de plataformas
+ENABLE_WHATSAPP=true
+ENABLE_WEB=true
+API_PORT=3001
+WEBAPP_URL=http://localhost:3000
+
+# Opcional
+SOFIA_DEBUG_MODE=false
+SOFIA_MAX_TOKENS=1500
 ```
 
-### Modos de Funcionamiento
-
-1. **Modo IA Completa + Imágenes** (Con API Key):
-   - **CERO patrones hardcodeados**
-   - Análisis inteligente de TODOS los mensajes e imágenes
-   - OCR avanzado con comprensión financiera
-   - Decisiones contextuales por IA
-   - Respuestas completamente naturales
-   - Acceso a información actualizada del mercado
-   - Protección automática de datos sensibles
-
-2. **Modo Básico** (Sin API Key):
-   - Funciones limitadas con respuestas amigables
-   - Sin capacidades de imagen
-   - Registro manual básico
-   - Sin análisis inteligente
-
-## 🔒 Seguridad y Privacidad con Imágenes
-
-- **Protección automática**: Oculta números de tarjetas y cuentas
-- **No almacenamiento**: Las imágenes no se guardan en el servidor
-- **Procesamiento local**: Análisis en tiempo real sin retención
-- **Datos sensibles**: Solo muestra últimos 4 dígitos si es necesario
-
-## 📋 Formatos de Imagen Soportados
-
-- **PNG, JPEG, WEBP, GIF** hasta 5MB
-- **Calidad automática**: Optimización inteligente
-- **OCR avanzado**: Reconocimiento de texto financiero especializado
-
-## 🚨 Diferencias Clave con Otros Bots
-
-### Bots Tradicionales:
-```python
-# ❌ Enfoque tradicional con patrones
-if "gané" in message or "recibí" in message:
-    amount = extract_with_regex(message)
-    category = check_keywords(message)
-
-# ❌ OCR básico
-text = basic_ocr(image)
-if "total" in text.lower():
-    # Regex para encontrar montos...
+### WebApp
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
-### SofIA con IA:
-```python
-# ✅ Enfoque 100% IA
-ai_decision = await perplexity.analyze_message(message, context)
-intelligent_response = await perplexity.generate_response(decision)
+## 🔍 Configuración de Logs
 
-# ✅ OCR inteligente
-financial_analysis = await sonar_pro.analyze_financial_image(image, context)
-contextual_response = await ai.generate_financial_advice(analysis)
+SofIA incluye un sistema de logs inteligente para reducir el spam de mensajes:
+
+### Modo Producción (Por Defecto)
+```bash
+NODE_ENV=production  # Logs resumidos cada 5 minutos
 ```
+- Muestra estadísticas de conexiones WebSocket cada 5 minutos
+- Reduce el spam de logs de conexiones/desconexiones individuales
+- Perfecto para uso diario
+
+### Modo Desarrollo (Debug Detallado)
+```bash
+NODE_ENV=development  # Logs detallados en tiempo real
+```
+- Muestra cada conexión y desconexión WebSocket
+- Útil para debugging y desarrollo
+- Logs más verbosos para diagnósticos
+
+## 🎉 Ventajas de la Nueva Arquitectura
+
+### ✅ **Para Desarrolladores**
+- Código modular y mantenible
+- TypeScript para mayor robustez
+- Separación clara de responsabilidades
+- Fácil testing unitario
+- Hot reload en desarrollo
+
+### ✅ **Para Usuarios**
+- Experiencia consistente entre plataformas
+- Interfaz web moderna y responsiva
+- Comunicación en tiempo real
+- Soporte para drag & drop de imágenes
+- Historial persistente
+
+### ✅ **Para Despliegue**
+- Escalabilidad independiente por plataforma
+- Opciones flexibles de hosting
+- Monitoring granular
+- Backup y recuperación simplificados
+- CI/CD automatizado
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Distribuido bajo la licencia MIT. Ver `LICENSE` para más información.
+
+## 👨‍💻 Autor
+
+**SofIA Team** - Tu asistente financiero inteligente
 
 ---
 
-## 📖 Documentación Adicional
-
-- [📷 Guía de Reconocimiento de Imágenes](docs/reconocimiento-imagenes.md)
-- [🚀 Casos de Uso del Agente](casos-de-uso-agente-financiero.md)
-- [💰 Funciones para Usuarios Básicos](funciones-esenciales-usuarios-basicos.md)
-
----
-
-**SofIA v2.1 - La evolución de la asesoría financiera inteligente con capacidades visuales avanzadas** 🚀📷
+**⭐ Si te gusta SofIA, por favor dale una estrella al repositorio!**
