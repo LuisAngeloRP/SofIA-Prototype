@@ -192,8 +192,8 @@ class WebPlatform {
             this.connectionStats.active++;
             this.connectionStats.total++;
             
-            // Solo log de debug en desarrollo
-            if (process.env.NODE_ENV === 'development') {
+            // Solo log de debug en desarrollo y reducir spam
+            if (process.env.NODE_ENV === 'development' && process.env.DEBUG_WEBSOCKET === 'true') {
                 console.log(`🔌 Cliente conectado: ${socket.id}`);
             }
 
@@ -202,8 +202,8 @@ class WebPlatform {
                 socket.join(sessionId);
                 this.connectionStats.sessions.add(sessionId);
                 
-                // Solo log de debug en desarrollo
-                if (process.env.NODE_ENV === 'development') {
+                // Solo log de debug en desarrollo y reducir spam
+                if (process.env.NODE_ENV === 'development' && process.env.DEBUG_WEBSOCKET === 'true') {
                     console.log(`👤 Cliente ${socket.id} se unió a sesión: ${sessionId}`);
                 }
                 
@@ -261,8 +261,8 @@ class WebPlatform {
                 // Actualizar estadísticas
                 this.connectionStats.active--;
                 
-                // Solo log de debug en desarrollo
-                if (process.env.NODE_ENV === 'development') {
+                // Solo log de debug en desarrollo y reducir spam
+                if (process.env.NODE_ENV === 'development' && process.env.DEBUG_WEBSOCKET === 'true') {
                     console.log(`🔌 Cliente desconectado: ${socket.id}`);
                 }
             });
@@ -270,12 +270,17 @@ class WebPlatform {
     }
 
     startConnectionStatsLogger() {
-        // Mostrar estadísticas de conexión cada 5 minutos en lugar de spam continuo
+        // Mostrar estadísticas de conexión cada 30 segundos si hay actividad
         this.statsInterval = setInterval(() => {
-            if (this.connectionStats.total > 0) {
-                console.log(`📊 WebSocket Stats: ${this.connectionStats.active} activos, ${this.connectionStats.total} total, ${this.connectionStats.sessions.size} sesiones únicas`);
+            if (this.connectionStats.active > 0) {
+                console.log(`📊 WebSocket: ${this.connectionStats.active} conexiones activas, ${this.connectionStats.sessions.size} sesiones`);
+                
+                // Reset contador total para no acumular indefinidamente
+                if (this.connectionStats.total > 1000) {
+                    this.connectionStats.total = this.connectionStats.active;
+                }
             }
-        }, 5 * 60 * 1000); // 5 minutos
+        }, 30 * 1000); // 30 segundos
     }
 
     async start() {

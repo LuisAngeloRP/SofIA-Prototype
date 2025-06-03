@@ -12,22 +12,44 @@ class WhatsAppPlatform {
             }),
             puppeteer: {
                 headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
-            }
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-accelerated-2d-canvas',
+                    '--no-first-run',
+                    '--no-zygote',
+                    '--disable-gpu'
+                ],
+                timeout: 60000 // 60 segundos de timeout
+            },
+            webVersionCache: {
+                type: 'local'
+            },
+            takeoverOnConflict: true,
+            restartOnAuthFail: true
         });
         
         this.memory = new ConversationMemory();
         this.agent = new FinanceAgent(this.memory);
         this.setupEventHandlers();
+        this.connectionStatus = 'disconnected';
+        this.lastQrTimestamp = 0;
     }
 
     setupEventHandlers() {
         this.client.on('qr', (qr) => {
-            console.log('📱 Escanea el código QR para conectar SofIA:');
-            qrcode.generate(qr, { small: true });
+            const currentTime = Date.now();
+            // Limitamos a mostrar QR máximo cada 30 segundos
+            if (currentTime - this.lastQrTimestamp > 30000) {
+                console.log('📱 Escanea el código QR para conectar SofIA:');
+                qrcode.generate(qr, { small: true });
+                this.lastQrTimestamp = currentTime;
+            }
         });
 
         this.client.on('ready', () => {
+            this.connectionStatus = 'connected';
             console.log('🚀 SofIA Finance Advisor (WhatsApp) está lista!');
             console.log('💰 Tu asesor financiero personal ya está en línea');
             
@@ -48,6 +70,9 @@ class WhatsAppPlatform {
             } else {
                 console.log('💡 Para usar IA avanzada e imágenes, configura PERPLEXITY_API_KEY en archivo .env');
             }
+            
+            // Establecer ping para mantener la conexión activa
+            this.startKeepAlive();
         });
 
         this.client.on('message', async (message) => {
@@ -55,7 +80,25 @@ class WhatsAppPlatform {
         });
 
         this.client.on('disconnected', (reason) => {
+            this.connectionStatus = 'disconnected';
             console.log('❌ Cliente desconectado:', reason);
+            
+            // Intentar reconectar automáticamente después de 10 segundos
+            console.log('🔄 Intentando reconectar en 10 segundos...');
+            setTimeout(() => this.reconnect(), 10000);
+        });
+        
+        this.client.on('auth_failure', (error) => {
+            console.error('❌ Error de autenticación:', error);
+            console.log('🔑 Por favor, borra la carpeta .wwebjs_auth y reinicia la aplicación');
+        });
+        
+        this.client.on('loading_screen', (percent, message) => {
+            console.log(`⏳ Cargando WhatsApp Web: ${percent}% - ${message}`);
+        });
+        
+        this.client.on('change_state', state => {
+            console.log(`📊 Estado cambiado a: ${state}`);
         });
     }
 
@@ -85,6 +128,15 @@ class WhatsAppPlatform {
 
             console.log(`📨 Mensaje de ${userNumber}: ${isImageMessage ? '[IMAGEN]' : userMessage} ${userMessage ? `- "${userMessage}"` : ''}`);
 
+            // Verificar estado de conexión
+            if (this.connectionStatus !== 'connected') {
+                console.warn('⚠️ Cliente no está completamente conectado. Estado:', this.connectionStatus);
+                // Intentar enviar mensaje de todos modos
+            }
+            
+            // Registrar recepción del mensaje
+            console.log(`✅ Mensaje recibido a las ${new Date().toLocaleTimeString()}`);
+            
             // Obtener el contexto de la conversación
             const conversationContext = this.memory.getConversationContext(userNumber);
             
@@ -119,25 +171,73 @@ class WhatsAppPlatform {
                 this.memory.addMessage(userNumber, userMessage, response);
             }
 
-            // Enviar respuesta
-            await message.reply(response);
-
-            console.log(`✅ Respuesta enviada a ${userNumber}`);
+            // Enviar respuesta con manejo de errores
+            try {
+                console.log(`🔄 Enviando respuesta a ${userNumber} a las ${new Date().toLocaleTimeString()}`);
+                await message.reply(response);
+                console.log(`✅ Respuesta enviada a ${userNumber}`);
+            } catch (replyError) {
+                console.error('❌ Error enviando respuesta:', replyError);
+                // Intentar enviar mensaje directo si la respuesta falla
+                try {
+                    const chat = await message.getChat();
+                    await chat.sendMessage(response);
+                    console.log(`✅ Respuesta enviada como mensaje directo a ${userNumber}`);
+                } catch (directMsgError) {
+                    console.error('❌ Error en mensaje directo:', directMsgError);
+                }
+            }
 
         } catch (error) {
             console.error('❌ Error procesando mensaje:', error);
-            await message.reply('Disculpa, tuve un pequeño problema. ¿Podrías repetir lo que me dijiste? 😅');
+            try {
+                await message.reply('Disculpa, tuve un pequeño problema. ¿Podrías repetir lo que me dijiste? 😅');
+            } catch (replyError) {
+                console.error('❌ No se pudo enviar mensaje de error:', replyError);
+            }
+        }
+    }
+
+    startKeepAlive() {
+        // Enviar ping cada 5 minutos para mantener la conexión activa
+        this.keepAliveInterval = setInterval(() => {
+            if (this.connectionStatus === 'connected') {
+                console.log(`🔄 Ping de mantenimiento: ${new Date().toLocaleTimeString()}`);
+                this.client.sendPresenceAvailable().catch(err => {
+                    console.warn('❌ Error en ping de mantenimiento:', err.message);
+                });
+            }
+        }, 5 * 60 * 1000);
+    }
+    
+    async reconnect() {
+        try {
+            console.log('🔄 Intentando reconexión...');
+            await this.client.initialize();
+        } catch (error) {
+            console.error('❌ Error en reconexión:', error);
+            console.log('🔄 Reintentando en 30 segundos...');
+            setTimeout(() => this.reconnect(), 30000);
         }
     }
 
     async start() {
         console.log('🔄 Iniciando SofIA Finance Advisor (WhatsApp)...');
         console.log('🧠 Configurando motor de IA...');
-        await this.client.initialize();
+        try {
+            await this.client.initialize();
+        } catch (error) {
+            console.error('❌ Error inicializando cliente:', error);
+            console.log('🔄 Reintentando en 10 segundos...');
+            setTimeout(() => this.start(), 10000);
+        }
     }
 
     async stop() {
         console.log('⏹️ Deteniendo SofIA Finance Advisor (WhatsApp)...');
+        if (this.keepAliveInterval) {
+            clearInterval(this.keepAliveInterval);
+        }
         await this.client.destroy();
     }
 }
@@ -173,6 +273,17 @@ process.on('SIGTERM', async () => {
     whatsappPlatform.memory.forceSync();
     await whatsappPlatform.stop();
     process.exit(0);
+});
+
+// Agregar manejo de errores no capturados
+process.on('uncaughtException', (error) => {
+    console.error('❌ Error no capturado:', error);
+    console.log('🔄 Intentando continuar a pesar del error...');
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('❌ Promesa rechazada no manejada:', reason);
+    console.log('🔄 Intentando continuar a pesar del error...');
 });
 
 // Iniciar el bot

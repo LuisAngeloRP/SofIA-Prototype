@@ -13,8 +13,16 @@ class PerplexityService {
                 baseURL: "https://api.perplexity.ai"
             });
             this.useLocalMode = false;
-            console.log('✅ Perplexity Sonar API conectada - Modo 100% IA');
+            // Solo loggear una vez por instancia
+            if (!PerplexityService._logged) {
+                console.log('✅ Perplexity Sonar API conectada - Modo 100% IA');
+                PerplexityService._logged = true;
+            }
         }
+
+        // Servicios se cargan de forma lazy para evitar dependencias circulares
+        this.userDataService = null;
+        this.transactionDetector = null;
 
         this.config = {
             model: "sonar", // Modelo Sonar optimizado
@@ -23,14 +31,61 @@ class PerplexityService {
         };
     }
 
-    async generateFinancialResponse(userMessage, context, userId) {
-        if (this.useLocalMode) {
-            return this.getFallbackResponse(userMessage, context);
+    // Obtener servicios usando ServiceRegistry para evitar dependencias circulares
+    getUserDataService() {
+        if (!this.userDataService) {
+            const ServiceRegistry = require('./ServiceRegistry');
+            const registry = ServiceRegistry.getInstance();
+            this.userDataService = registry.getService('UserDataService');
         }
+        return this.userDataService;
+    }
 
+    getTransactionDetector() {
+        if (!this.transactionDetector) {
+            const ServiceRegistry = require('./ServiceRegistry');
+            const registry = ServiceRegistry.getInstance();
+            this.transactionDetector = registry.getService('TransactionDetectorService');
+        }
+        return this.transactionDetector;
+    }
+
+    async generateFinancialResponse(userMessage, context, userId) {
         try {
-            const systemPrompt = this.buildIntelligentSystemPrompt(context);
-            const userPrompt = this.buildIntelligentUserPrompt(userMessage, context);
+            // PASO 1: Detectar transacciones automáticamente con IA
+            const transactionDetector = this.getTransactionDetector();
+            if (transactionDetector) {
+                const transactionAnalysis = await transactionDetector.analyzeMessage(userId, userMessage);
+                
+                if (transactionAnalysis.hasTransaction) {
+                    console.log(`🔍 Transacción detectada automáticamente para ${userId}:`, transactionAnalysis.transactionData);
+                    
+                    // Si se detectó y registró una transacción, devolver la confirmación AI
+                    if (transactionAnalysis.registrationResult?.success) {
+                        return transactionAnalysis.aiResponse;
+                    }
+                }
+            }
+
+            // PASO 2: Cargar datos actualizados del usuario
+            let updatedContext = context;
+            const userDataService = this.getUserDataService();
+            if (userDataService) {
+                try {
+                    const userData = await userDataService.getUserData(userId);
+                    updatedContext = this.buildContextFromUserData(userData, context);
+                } catch (error) {
+                    console.warn('No se pudieron cargar datos de usuario actualizados:', error.message);
+                }
+            }
+
+            // PASO 3: Generar respuesta financiera con IA
+            if (this.useLocalMode) {
+                return this.getFallbackResponse(userMessage, updatedContext);
+            }
+
+            const systemPrompt = this.buildIntelligentSystemPrompt(updatedContext);
+            const userPrompt = this.buildIntelligentUserPrompt(userMessage, updatedContext);
 
             const response = await this.client.chat.completions.create({
                 model: this.config.model,
@@ -62,6 +117,32 @@ class PerplexityService {
             console.error('❌ Error en Perplexity Sonar:', error);
             return this.getFallbackResponse(userMessage, context);
         }
+    }
+
+    // Construir contexto desde datos de usuario del nuevo sistema
+    buildContextFromUserData(userData, originalContext) {
+        const financial = userData.financial;
+        const profile = userData.profile;
+        const history = userData.history;
+
+        return {
+            ...originalContext,
+            user_profile: {
+                name: profile.name,
+                financial_data: {
+                    income: financial.income,
+                    expenses: financial.expenses,
+                    summary: financial.summary
+                },
+                preferences: profile.preferences,
+                aiPersonalization: profile.aiPersonalization
+            },
+            total_interactions: history.totalInteractions,
+            recent_messages: history.conversations.slice(-5).map(conv => ({
+                user: conv.data.description || 'Interacción financiera',
+                agent: conv.data.aiAnalysis || 'Análisis realizado'
+            }))
+        };
     }
 
     buildIntelligentSystemPrompt(context) {
@@ -131,24 +212,44 @@ ESTILO DE COMUNICACIÓN:
             prompt += `\n\nSu situación financiera actual:`;
             
             if (financialData.income?.length > 0) {
-                const totalIncome = financialData.income.reduce((sum, item) => sum + item.amount, 0);
+                // Calcular el total de ingresos de forma segura
+                const totalIncome = financialData.income.reduce((sum, item) => {
+                    // Verificar que item.amount sea un número válido
+                    const amount = item && typeof item.amount === 'number' ? item.amount : 0;
+                    return sum + amount;
+                }, 0);
+                
                 prompt += `\n- Ingresos registrados: S/${totalIncome.toLocaleString()} (${financialData.income.length} transacciones)`;
                 
                 const recentIncome = financialData.income.slice(-2);
                 recentIncome.forEach(income => {
-                    const currencySymbol = income.currency === 'dolares' ? '$' : income.currency === 'pesos' ? '$' : 'S/';
-                    prompt += `\n  • ${currencySymbol}${income.amount.toLocaleString()} de ${income.source}`;
+                    // Verificar que income tenga propiedades válidas
+                    if (income && typeof income.amount === 'number') {
+                        const currencySymbol = income.currency === 'dolares' ? '$' : income.currency === 'pesos' ? '$' : 'S/';
+                        const source = income.source || 'No especificado';
+                        prompt += `\n  • ${currencySymbol}${income.amount.toLocaleString()} de ${source}`;
+                    }
                 });
             }
             
             if (financialData.expenses?.length > 0) {
-                const totalExpenses = financialData.expenses.reduce((sum, item) => sum + item.amount, 0);
+                // Calcular el total de gastos de forma segura
+                const totalExpenses = financialData.expenses.reduce((sum, item) => {
+                    // Verificar que item.amount sea un número válido
+                    const amount = item && typeof item.amount === 'number' ? item.amount : 0;
+                    return sum + amount;
+                }, 0);
+                
                 prompt += `\n- Gastos registrados: S/${totalExpenses.toLocaleString()} (${financialData.expenses.length} transacciones)`;
                 
                 const recentExpenses = financialData.expenses.slice(-2);
                 recentExpenses.forEach(expense => {
-                    const currencySymbol = expense.currency === 'dolares' ? '$' : expense.currency === 'pesos' ? '$' : 'S/';
-                    prompt += `\n  • ${currencySymbol}${expense.amount.toLocaleString()} en ${expense.category}`;
+                    // Verificar que expense tenga propiedades válidas
+                    if (expense && typeof expense.amount === 'number') {
+                        const currencySymbol = expense.currency === 'dolares' ? '$' : expense.currency === 'pesos' ? '$' : 'S/';
+                        const category = expense.category || 'General';
+                        prompt += `\n  • ${currencySymbol}${expense.amount.toLocaleString()} en ${category}`;
+                    }
                 });
             }
         }

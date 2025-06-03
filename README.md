@@ -318,3 +318,121 @@ Distribuido bajo la licencia MIT. Ver `LICENSE` para más información.
 ---
 
 **⭐ Si te gusta SofIA, por favor dale una estrella al repositorio!**
+
+## 🔧 Solución al Problema de Spam de Conexiones
+
+Si ves muchos logs de conexiones/desconexiones WebSocket:
+
+```
+🔌 Cliente conectado: ABC123
+🔌 Cliente desconectado: ABC123
+```
+
+### Causa del Problema
+- La webapp no está ejecutándose pero el backend está esperando conexiones
+- Reconexiones automáticas fallidas
+- Logs demasiado verbosos en desarrollo
+
+### Solución
+1. **Asegúrate de ejecutar ambos procesos**:
+   ```bash
+   # Terminal 1
+   npm run back:dev
+   
+   # Terminal 2
+   npm run front:dev
+   ```
+
+2. **Configurar entorno de producción** en `.env`:
+   ```env
+   NODE_ENV=production
+   DEBUG_WEBSOCKET=false
+   ```
+
+3. **Solo para debugging** activar logs detallados:
+   ```env
+   NODE_ENV=development
+   DEBUG_WEBSOCKET=true
+   ```
+
+### Mejoras Implementadas
+- ✅ Configuración optimizada de Socket.IO con menos reconexiones
+- ✅ Logs condicionales basados en variables de entorno
+- ✅ Sistema de estadísticas agregadas cada 30 segundos
+- ✅ Mejor gestión del ciclo de vida de conexiones
+
+## 📊 URLs Disponibles
+
+Una vez ejecutando:
+
+### Backend (Puerto 3001)
+- 🔗 API Base: http://localhost:3001
+- 💊 Health Check: http://localhost:3001/health
+- 💬 Chat API: http://localhost:3001/api/chat
+- 📷 Image API: http://localhost:3001/api/chat/image
+- 🔌 WebSocket: ws://localhost:3001
+
+### Frontend (Puerto 3000)
+- 🌍 Web App: http://localhost:3000
+
+## 🔍 Verificar Estado
+
+```bash
+npm run status
+```
+
+## 📁 Estructura de Datos por Usuario
+
+```
+src/data/users/
+├── [usuario-id]/
+│   ├── profile.json      # Perfil y preferencias
+│   ├── financial.json    # Datos financieros
+│   ├── history.json      # Historial de conversaciones
+│   └── conversations/    # Conversaciones detalladas
+```
+
+## 🤖 Funciones de IA
+
+- **Análisis de Comprobantes**: Extrae datos de facturas e imágenes
+- **Consejos Personalizados**: Basados en el perfil financiero del usuario
+- **Detección de Transacciones**: Automática con Perplexity AI
+- **Memoria Contextual**: Recuerda conversaciones anteriores
+
+## 🔧 Comandos Útiles
+
+```bash
+# Desarrollo
+npm run back:dev          # Backend con nodemon
+npm run front:dev         # Frontend con hot reload
+
+# Producción
+npm run back:start        # Backend en producción
+npm run front:build       # Build del frontend
+npm run front:start       # Frontend en producción
+
+# Utilidades
+npm run status            # Verificar estado de servicios
+npm run back:help         # Ayuda de configuración
+```
+
+## 🐛 Troubleshooting
+
+### Problema: Spam de conexiones WebSocket
+**Solución**: Seguir la sección "Solución al Problema de Spam de Conexiones" arriba.
+
+### Problema: IA no responde
+**Verificar**: API key de Perplexity en `.env`
+
+### Problema: WhatsApp no conecta
+**Verificar**: Puerto 3001 disponible y escanear QR
+
+### Problema: Frontend no carga
+**Verificar**: 
+- `npm run front:dev` ejecutándose
+- Puerto 3000 disponible
+- URL correcta: http://localhost:3000
+
+## 📝 Licencia
+
+MIT License
